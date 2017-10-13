@@ -1,1 +1,1 @@
-# DSPs---Pr-ctica-2
+# DSPs---Practica-2
