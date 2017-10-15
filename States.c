@@ -16,8 +16,9 @@ SystemStatus systemState = {
 		MAIN_STATE,
 		ERROR_STATE,
 		ALARM_OFF,
-		{25, CELSIUS},
+		{25, 0, CELSIUS},
 		80,
+		0,
 		0 //TODO check initial frecuency
 };
 
@@ -39,13 +40,67 @@ void updateSystemState(){
 	//Depending on the pressed button and the state this switch will update the system information.
 	switch(systemState.screenState){
 		case MAIN_STATE:{
-
-		}
+					if(B0 == systemState.pressedButton)
+							 systemState.currentState = MAIN_MENU_STATE;;
+					return;
+				}
 		case MAIN_MENU_STATE:{
-
+			switch(systemState.pressedButton){
+				case B0:{
+					systemState.currentState = MAIN_STATE;
+					return;
+				}
+				case B1:{
+					systemState.currentState = ALARMA_STATE;
+					return;
+				}
+				case B2:{
+					systemState.currentState = FORMAT_STATE;
+					return;
+				}
+				case B3:{
+					systemState.currentState = CHANGE_STATE;
+					return;
+				}
+				case B4:{
+					systemState.currentState = MANUAL_STATE;
+					return;
+				}
+				case B5:{
+					systemState.currentState = FRECUENCY_STATE;
+					return;
+				}
+				case NO_BUTTON:
+				default:{
+					systemState.currentState = MAIN_STATE;
+					return;
+				}
+			}
 		}
 		case ALARMA_STATE:{
+			switch(systemState.pressedButton){
+				case B0:{
 
+					return;
+				}
+				case B1:{
+
+					return;
+				}
+				case B2:{
+
+					return;
+				}
+				case B3:{
+
+					return;
+				}
+				case B4:
+				case B5:
+				case NO_BUTTON:
+				default:
+						return;
+			}
 		}
 		case FORMAT_STATE:{
 
@@ -57,12 +112,14 @@ void updateSystemState(){
 
 		}
 		case FRECUENCY_STATE:{
-
+			if(B0 == systemState.pressedButton)
+					 systemState.currentState = MAIN_STATE;;
+			return;
 		}
 		case ERROR_STATE:
 		default: {
 			systemState.currentState = MAIN_STATE;
-			updateScreen();
+			return;
 		}
 	}
 }

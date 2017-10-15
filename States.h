@@ -33,6 +33,7 @@ typedef enum{ CELSIUS, FAHRENHEIT }DEGREES;
 /*Type for the showed temperature*/
 typedef struct{
 	uint16 celsius;
+	uint16 celsiusMonitor;
 	DEGREES typeDeegrees;
 }Temperature;
 
@@ -44,6 +45,7 @@ typedef struct{
 	AlarmStatus alarm;
 	Temperature temperature;
 	uint8 velocity;
+	uint8 velocityMonitor;
 	uint32 frecuency;
 }SystemStatus;
 
