@@ -1,3 +1,9 @@
+/*
+ * init.h
+ *
+ *  Created on: 17/09/2017
+ *      Author: Daniel Barragán
+ */
 
 #include "DataTypeDefinitions.h"
 #include "NVIC.h"
@@ -5,7 +11,6 @@
 #include "PIT.h"
 #include "MK64F12.h"
 #include "init.h"
-#include "Secuencias_LED.h"
 
 void initMain(){
 	/**Activating the clock gating of the GPIOs and the PIT*/
@@ -77,8 +82,6 @@ void initMain(){
 		NVIC_enableInterruptAndPriotity(PORTB_IRQ,PRIORITY_4);
 
 		EnableInterrupts;
-
-		turnLEDsOff();//Safe start value for the LEDs
 }
 
 void initDAC(){
