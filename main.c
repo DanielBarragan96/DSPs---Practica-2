@@ -21,7 +21,7 @@ int main(void) {
 
     while(1) {
 
-    	verifyState();
+    	if(TRUE == GPIO_getIRQStatus(GPIO_C)) checkButtons();//check pressed buttons if there was an interruption.
 
     }
     return 0 ;

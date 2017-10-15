@@ -4,7 +4,6 @@
  * autor: Daniel Barragán
  */
 
-
 #include "DataTypeDefinitions.h"
 #include "NVIC.h"
 #include "GPIO.h"
@@ -12,10 +11,33 @@
 #include "MK64F12.h"
 #include "States.h"
 
-ProgrmaState currentState = MAIN_STATE;
+SystemStatus systemState = {
+		NO_BUTTON,
+		MAIN_STATE,
+		ERROR_STATE,
+		ALARM_OFF,
+		{25, CELSIUS},
+		80,
+		0 //TODO check initial frecuency
+};
 
-void verifyState(){
-	switch(currentState){
+void checkButtons(){
+	//TODO check buttons interruptions.
+
+
+	//if the screen state is different than the current state, update the screen image.
+	if(systemState.currentState == systemState.screenState) updateScreen();
+	//if a button was pushed update the screen image.
+	if(NO_BUTTON != systemState.pressedButton){
+		updateSystemState();
+		updateScreen();
+	}
+
+}
+
+void updateSystemState(){
+	//Depending on the pressed button and the state this switch will update the system information.
+	switch(systemState.screenState){
 		case MAIN_STATE:{
 
 		}
@@ -37,6 +59,18 @@ void verifyState(){
 		case FRECUENCY_STATE:{
 
 		}
-		default:  return;
+		case ERROR_STATE:
+		default: {
+			systemState.currentState = MAIN_STATE;
+			updateScreen();
+		}
 	}
+}
+
+void updateScreen(){
+	//TODO change to SPI module
+}
+
+SystemStatus* getSystemStatus(){
+	return &systemState;
 }
