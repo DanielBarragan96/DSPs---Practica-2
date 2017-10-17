@@ -28,24 +28,34 @@ typedef enum{
 typedef enum{ NO_BUTTON, B0, B1, B2, B3, B4, B5 }Buttons;
 /*Type for the alarm status*/
 typedef enum{ ALARM_OFF, ALARM_ON }AlarmStatus;
+
+typedef struct{
+	AlarmStatus alarmStatus;
+	uint8 alarmaValue;
+	uint8 alarmMonitor;
+}Alarm;
 /*Type for the temperature type*/
 typedef enum{ CELSIUS, FAHRENHEIT }DEGREES;
 /*Type for the showed temperature*/
 typedef struct{
-	uint16 celsius;
+	uint16 celsiusValue;
 	uint16 celsiusMonitor;
 	DEGREES typeDeegrees;
 }Temperature;
+
+typedef struct{
+	uint8 velocityValue;
+	uint8 velocityMonitor;
+}Velocity;
 
 /*Structure for the sytem status*/
 typedef struct{
 	Buttons pressedButton;
 	ProgrmaState currentState;
 	ProgrmaState screenState;
-	AlarmStatus alarm;
+	Alarm alarm;
 	Temperature temperature;
-	uint8 velocity;
-	uint8 velocityMonitor;
+	Velocity velocity;
 	uint32 frecuency;
 }SystemStatus;
 

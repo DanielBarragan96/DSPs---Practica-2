@@ -15,11 +15,10 @@ SystemStatus systemState = {
 		NO_BUTTON,
 		MAIN_STATE,
 		ERROR_STATE,
-		ALARM_OFF,
+		{ALARM_OFF,30,30},
 		{25, 0, CELSIUS},
-		80,
-		0,
-		0 //TODO check initial frecuency
+		{80,80},
+		0	 //TODO check initial frecuency
 };
 
 void checkButtons(){
@@ -80,7 +79,32 @@ void updateSystemState(){
 		case ALARMA_STATE:{
 			switch(systemState.pressedButton){
 				case B0:{
-
+					systemState.currentState = MAIN_STATE;
+					return;
+				}
+				case B1:{
+					systemState.alarm.alarmMonitor -= 1;
+					return;
+				}
+				case B2:{
+					systemState.alarm.alarmMonitor += 1;
+					return;
+				}
+				case B3:{
+					systemState.alarm.alarmaValue = systemState.alarm.alarmMonitor;
+					return;
+				}
+				case B4:
+				case B5:
+				case NO_BUTTON:
+				default:
+						return;
+			}
+		}
+		case FORMAT_STATE:{
+			switch(systemState.pressedButton){
+				case B0:{
+					systemState.currentState = MAIN_STATE;
 					return;
 				}
 				case B1:{
@@ -102,11 +126,30 @@ void updateSystemState(){
 						return;
 			}
 		}
-		case FORMAT_STATE:{
-
-		}
 		case CHANGE_STATE:{
+			switch(systemState.pressedButton){
+				case B0:{
+					systemState.currentState = MAIN_STATE;
+					return;
+				}
+				case B1:{
 
+					return;
+				}
+				case B2:{
+
+					return;
+				}
+				case B3:{
+
+					return;
+				}
+				case B4:
+				case B5:
+				case NO_BUTTON:
+				default:
+						return;
+			}
 		}
 		case MANUAL_STATE:{
 
