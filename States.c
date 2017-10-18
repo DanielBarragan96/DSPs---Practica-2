@@ -11,13 +11,13 @@
 #include "MK64F12.h"
 #include "States.h"
 
-SystemStatus systemState = {
+SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
 		MAIN_STATE,
 		ERROR_STATE,
-		{ALARM_OFF,30,30},
-		{25, 0, CELSIUS},
-		{80,80},
+		{OFF, 30, 30},
+		{25, CELSIUS, CELSIUS},
+		{ON, ON, 80, 80},
 		0	 //TODO check initial frecuency
 };
 
@@ -32,20 +32,21 @@ void checkButtons(){
 		updateSystemState();
 		updateScreen();
 	}
-
+	systemState.pressedButton = NO_BUTTON;
 }
 
 void updateSystemState(){
 	//Depending on the pressed button and the state this switch will update the system information.
-	switch(systemState.screenState){
+	switch(systemState.screenState){//first check in which menu we are, then handle the input
 		case MAIN_STATE:{
-					if(B0 == systemState.pressedButton)
-							 systemState.currentState = MAIN_MENU_STATE;;
+					if(B0 == systemState.pressedButton)//in the first case only if B0 was pressed...
+							 systemState.currentState = MAIN_MENU_STATE;;//enter the MAIN_MENU_STATE
 					return;
 				}
 		case MAIN_MENU_STATE:{
+			//in this case we change the menu depending on the pressed switch
 			switch(systemState.pressedButton){
-				case B0:{
+				case B0:{//return to initial menu and resets the monitor
 					systemState.currentState = MAIN_STATE;
 					return;
 				}
@@ -78,93 +79,138 @@ void updateSystemState(){
 		}
 		case ALARMA_STATE:{
 			switch(systemState.pressedButton){
-				case B0:{
+				case B0:{//return to initial menu and resets the monitor
+					systemState.alarm.alarmMonitor= systemState.alarm.alarmaValue;;
 					systemState.currentState = MAIN_STATE;
 					return;
 				}
-				case B1:{
+				case B1:{//this decreases the alarm trigger by 1 degree (Celsius)
 					systemState.alarm.alarmMonitor -= 1;
 					return;
 				}
-				case B2:{
+				case B2:{//this decreases the alarm trigger by 1 degree (Fahrenheit)
 					systemState.alarm.alarmMonitor += 1;
 					return;
 				}
-				case B3:{
+				case B3:{//this updates the current alarm triggered value
 					systemState.alarm.alarmaValue = systemState.alarm.alarmMonitor;
 					return;
 				}
 				case B4:
 				case B5:
 				case NO_BUTTON:
-				default:
+				default://if other buttons were press just return without making any changes
 						return;
 			}
 		}
 		case FORMAT_STATE:{
 			switch(systemState.pressedButton){
-				case B0:{
+				case B0:{//return to initial menu and resets the monitor
+					systemState.temperature.typeDeegreesMonitor = systemState.temperature.typeDeegrees;
 					systemState.currentState = MAIN_STATE;
 					return;
 				}
-				case B1:{
-
+				case B1:{//change the Monitor value, which will set the actual value if B3 is pressed
+					systemState.temperature.typeDeegreesMonitor = CELSIUS;
 					return;
 				}
-				case B2:{
-
+				case B2:{//change the Monitor value, which will set the actual value if B3 is pressed
+					systemState.temperature.typeDeegreesMonitor = FAHRENHEIT;
 					return;
 				}
-				case B3:{
-
+				case B3:{//change the actual temperature format, which will be used in the screen module
+					systemState.temperature.typeDeegrees = systemState.temperature.typeDeegreesMonitor;
 					return;
 				}
 				case B4:
 				case B5:
 				case NO_BUTTON:
-				default:
+				default://if other buttons were press just return without making any changes
 						return;
 			}
 		}
 		case CHANGE_STATE:{
 			switch(systemState.pressedButton){
-				case B0:{
+				case B0:{//return to initial menu and resets the monitor
+					systemState.motor.velocityMonitor = systemState.motor.velocityValue;
 					systemState.currentState = MAIN_STATE;
 					return;
 				}
-				case B1:{
-
+				case B1:{//this decreases the motor velocity motor by 5%
+					systemState.motor.velocityMonitor -= 5;
 					return;
 				}
-				case B2:{
-
+				case B2:{//this increases the motor velocity motor by 5%
+					systemState.motor.velocityMonitor += 5;
 					return;
 				}
-				case B3:{
-
+				case B3:{//sets the new velocity of the motor
+					systemState.motor.velocityValue = systemState.motor.velocityMonitor;
 					return;
 				}
 				case B4:
 				case B5:
 				case NO_BUTTON:
-				default:
+				default://if other buttons were press just return without making any changes
 						return;
 			}
 		}
 		case MANUAL_STATE:{
-
+			switch(systemState.pressedButton){
+							case B0:{//return to initial menu and resets the monitors
+								resetMonitors();
+								systemState.currentState = MAIN_STATE;
+								return;
+							}
+							case B1:{//this sets to ON the state of the motor monitor
+								systemState.motor.motorStatusMonitor = ON;
+								return;
+							}
+							case B2:{//this sets to OFF the state of the motor monitor
+								systemState.motor.motorStatusMonitor = OFF;
+								return;
+							}
+							case B3:{//this updates the state of the motor using the monitor
+								systemState.motor.motorStatus = systemState.motor.motorStatusMonitor;
+								if(OFF != systemState.motor.motorStatus)//If the motor is ON
+									systemState.motor.velocityValue = systemState.motor.velocityMonitor;//update the velocity
+								else
+									systemState.motor.velocityValue = 80;//set the default value for the motor velocity
+								return;
+							}
+							case B4:{//this decreases the motor velocity motor by 5%
+								systemState.motor.velocityMonitor -= 5;
+								return;
+							}
+							case B5:{//this increases the motor velocity motor by 5%
+								systemState.motor.velocityMonitor += 5;
+								return;
+							}
+							case NO_BUTTON:
+							default://if other buttons were press just return without making any changes
+								return;
+						}
 		}
 		case FRECUENCY_STATE:{
-			if(B0 == systemState.pressedButton)
-					 systemState.currentState = MAIN_STATE;;
+			if(B0 == systemState.pressedButton)//return to initial menu only if B0 was pressed
+					 systemState.currentState = MAIN_STATE;
 			return;
 		}
 		case ERROR_STATE:
-		default: {
+		default: {//this cases meant there was a problem with the system, with this we can reset the screen
 			systemState.currentState = MAIN_STATE;
+			systemState.screenState = ERROR_STATE;//by setting the screenState as ERROR_STATE,
+												  //we can handle this with the SPI if needed
 			return;
 		}
 	}
+}
+
+void resetMonitors(){//resets all the monitors with the current states
+	systemState.alarm.alarmMonitor = systemState.alarm.alarmaValue;
+	systemState.temperature.typeDeegreesMonitor = systemState.temperature.typeDeegrees;
+	systemState.motor.motorStatusMonitor = systemState.motor.motorStatus;
+	systemState.motor.velocityMonitor = systemState.motor.velocityValue;
 }
 
 void updateScreen(){
@@ -172,5 +218,5 @@ void updateScreen(){
 }
 
 SystemStatus* getSystemStatus(){
-	return &systemState;
+	return &systemState;//get the direction of the system state variable
 }

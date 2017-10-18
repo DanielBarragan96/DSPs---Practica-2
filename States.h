@@ -24,30 +24,31 @@ typedef enum{
 	FRECUENCY_STATE,
 	ERROR_STATE
 }ProgrmaState;
+/*Type for the alarm status*/
+typedef enum{ OFF, ON }StatusTurn;
 /*Type for the pressed button*/
 typedef enum{ NO_BUTTON, B0, B1, B2, B3, B4, B5 }Buttons;
-/*Type for the alarm status*/
-typedef enum{ ALARM_OFF, ALARM_ON }AlarmStatus;
-
-typedef struct{
-	AlarmStatus alarmStatus;
-	uint8 alarmaValue;
-	uint8 alarmMonitor;
-}Alarm;
 /*Type for the temperature type*/
 typedef enum{ CELSIUS, FAHRENHEIT }DEGREES;
+/*Type for the alarm settings*/
+typedef struct{
+	StatusTurn alarmStatus;//current value of the alarm
+	uint8 alarmaValue;//value at which the alarm should sound
+	uint8 alarmMonitor;//desired change of the value of alarmValue
+}Alarm;
 /*Type for the showed temperature*/
 typedef struct{
-	uint16 celsiusValue;
-	uint16 celsiusMonitor;
-	DEGREES typeDeegrees;
+	uint16 celsiusValue;//the temperature value in celsius
+	DEGREES typeDeegreesMonitor;//desired change of calesiusValue
+	DEGREES typeDeegrees;//The format of the temperature showed in the screen
 }Temperature;
-
+/*Type for the velocity of the motor*/
 typedef struct{
-	uint8 velocityValue;
-	uint8 velocityMonitor;
-}Velocity;
-
+	StatusTurn motorStatus;//current motor status
+	StatusTurn motorStatusMonitor;//desired value of motorStatus
+	uint8 velocityValue;//current motor velocity
+	uint8 velocityMonitor;//desired velocity for the motor
+}Motor;
 /*Structure for the sytem status*/
 typedef struct{
 	Buttons pressedButton;
@@ -55,9 +56,9 @@ typedef struct{
 	ProgrmaState screenState;
 	Alarm alarm;
 	Temperature temperature;
-	Velocity velocity;
+	Motor motor;
 	uint32 frecuency;
-}SystemStatus;
+}SystemStatus;//this type of struct contents the required system information
 
 /********************************************************************************************/
 /********************************************************************************************/
@@ -67,6 +68,15 @@ typedef struct{
  	 \return void
  */
 void checkButtons();
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This module is used for cleaning the monitor variables.
+ 	 This should be used if there were no changes made to the value variables.
+ 	 \return void
+ */
+void resetMonitors();
 /********************************************************************************************/
 /********************************************************************************************/
 /********************************************************************************************/
