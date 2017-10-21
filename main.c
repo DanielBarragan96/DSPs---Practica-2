@@ -13,11 +13,12 @@
 #include "MK64F12.h"
 #include "init.h"
 #include "States.h"
-
+#include "Alarm.h"
 
 int main(void) {
 
 	initMain();//configure the Kinetis
+	SystemStatus actualStatus = *(getSystemStatus());//load the systemStatus variable
 
     while(1) {
 

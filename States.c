@@ -11,7 +11,7 @@
 #include "MK64F12.h"
 #include "States.h"
 
-SystemStatus systemState = {//variable where we store the system states
+static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
 		MAIN_STATE,
 		ERROR_STATE,
@@ -217,4 +217,7 @@ SystemStatus* getSystemStatus(){
 
 void setPressedButton(Buttons pressedBttn){
 	systemState.pressedButton = pressedBttn;
+}
+void changeAlarm(StatusTurn status){
+	systemState.alarm.alarmStatus = status;
 }

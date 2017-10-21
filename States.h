@@ -105,9 +105,17 @@ SystemStatus* getSystemStatus();
 /********************************************************************************************/
 /********************************************************************************************/
 /*!
- 	 \brief	This module changes pressed button in the systemState variable.
+ 	 \brief	This function changes pressed button in the systemState variable.
  	 \return void
  */
 void setPressedButton(Buttons pressed);
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This function updates the alarm state.
+ 	 \return void
+ */
+void changeAlarm(StatusTurn status);
 
 #endif /* STATUS_H_ */
