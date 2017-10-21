@@ -18,21 +18,15 @@ SystemStatus systemState = {//variable where we store the system states
 		{OFF, 30, 30},
 		{25, CELSIUS, CELSIUS},
 		{ON, ON, 80, 80},
-		0	 //TODO check initial frecuency
+		0	 //TODO check initial frequency
 };
 
 void checkButtons(){
-	//TODO check buttons interruptions.
-
-
-	//if the screen state is different than the current state, update the screen image.
-	if(systemState.currentState == systemState.screenState) updateScreen();
 	//if a button was pushed update the screen image.
-	if(NO_BUTTON != systemState.pressedButton){
-		updateSystemState();
-		updateScreen();
-	}
-	systemState.pressedButton = NO_BUTTON;
+	if(NO_BUTTON != systemState.pressedButton) updateSystemState();
+	//if the screen state is different than the current state, update the screen image.
+	if(systemState.currentState != systemState.screenState) updateScreen();
+	systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 }
 
 void updateSystemState(){
@@ -219,4 +213,8 @@ void updateScreen(){
 
 SystemStatus* getSystemStatus(){
 	return &systemState;//get the direction of the system state variable
+}
+
+void setPressedButton(Buttons pressedBttn){
+	systemState.pressedButton = pressedBttn;
 }
