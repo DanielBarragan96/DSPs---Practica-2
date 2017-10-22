@@ -9,6 +9,7 @@
 #include "GPIO.h"
 #include "PIT.h"
 #include "MK64F12.h"
+#include "Motor.h"
 #include "States.h"
 
 static SystemStatus systemState = {//variable where we store the system states
