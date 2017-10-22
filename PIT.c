@@ -1,3 +1,10 @@
+/*
+ * init.h
+ *
+ *  Created on: 21/09/2017
+ *      Author: Daniel Barragán and Alejandro Ávila
+ */
+
 #include "MK64F12.h"
 #include "PIT.h"
 
