@@ -16,7 +16,8 @@
 int main(void) {
 
 	initMain();//configure the Kinetis
-	SPI_init();
+	SPI_init();//configure the SPI (screen)
+	FlexTimer_Init();//configure the FlexTimer (motor)
 
 	updateScreen();
 
@@ -25,7 +26,7 @@ int main(void) {
     	//if(TRUE == GPIO_getIRQStatus(GPIO_C))
     	checkButtons();//check pressed buttons, which are handled in the interruption of the GPIO_C.
 
-    	checkAlarm();
+    	checkAlarm();//update the alarm status.
     }
     return 0 ;
 }
