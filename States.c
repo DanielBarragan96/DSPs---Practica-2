@@ -23,10 +23,13 @@ static SystemStatus systemState = {//variable where we store the system states
 
 void checkButtons(){
 	//if a button was pushed update the screen image.
-	if(NO_BUTTON != systemState.pressedButton) updateSystemState();
+	if(NO_BUTTON != systemState.pressedButton){
+		systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
+		updateSystemState();
+	}
 	//if the screen state is different than the current state, update the screen image.
 	if(systemState.currentState != systemState.screenState) updateScreen();
-	systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
+
 }
 
 void updateSystemState(){

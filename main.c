@@ -6,9 +6,7 @@
 
 #include <stdio.h>
 #include "DataTypeDefinitions.h"
-#include "NVIC.h"
 #include "GPIO.h"
-#include "PIT.h"
 #include "SPI.h"
 #include "MK64F12.h"
 #include "init.h"
@@ -24,7 +22,8 @@ int main(void) {
 
     while(1) {
 
-    	if(TRUE == GPIO_getIRQStatus(GPIO_C)) checkButtons();//check pressed buttons if there was an interruption.
+    	//if(TRUE == GPIO_getIRQStatus(GPIO_C))
+    	checkButtons();//check pressed buttons, which are handled in the interruption of the GPIO_C.
 
     	checkAlarm();
     }
