@@ -41,11 +41,10 @@ void initMain(){
 		//Alarm
 		GPIO_pinControlRegister(GPIO_C,BIT3,&pinControlRegisterMux1);
 
-
 		/**Assigns a safe value to the output pin21 of the GPIOB*/
 		GPIOB->PDOR |= 0x00200000;/**Blue led off*/
 		GPIOB->PDOR |= 0x00400000;/**Red led off*/
-		GPIOE->PDOR |= 0x2000000;/**Green led off*/
+		GPIOE->PDOR |= 0x04000000;/**Green led off*/
 
 		/**Configure Port Pins as input/output*/
 		//LEDs
@@ -70,6 +69,7 @@ void initMain(){
 		NVIC_enableInterruptAndPriotity(PORTC_IRQ,PRIORITY_4);
 
 		EnableInterrupts;
+
 }
 
 void initDAC(){
