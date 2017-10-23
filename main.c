@@ -25,7 +25,7 @@ int main(void) {
 
     while(1) {//the systemStatus variable is located in States.c, and stores the system information.
 
-    	if(TRUE == GPIO_getIRQStatus(GPIO_C)) PORTC_IRQHandler();
+    	//if(TRUE == GPIO_getIRQStatus(GPIO_C)) PORTC_IRQHandler();
     	checkButtons();//check pressed buttons, which are handled in the interruption of the GPIO_C.
 
     	checkAlarm();//update the alarm status according to systemStatus.
