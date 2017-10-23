@@ -64,7 +64,7 @@ typedef struct{
 /********************************************************************************************/
 /********************************************************************************************/
 /*!
- 	 \brief	This module checks the interruption of the pressed buttons.
+ 	 \brief	This function checks the interruption of the pressed buttons.
  	 \return void
  */
 void checkButtons();
@@ -72,7 +72,7 @@ void checkButtons();
 /********************************************************************************************/
 /********************************************************************************************/
 /*!
- 	 \brief	This module is used for cleaning the monitor variables.
+ 	 \brief	This function is used for cleaning the monitor variables.
  	 This should be used if there were no changes made to the value variables.
  	 \return void
  */
@@ -81,7 +81,7 @@ void resetMonitors();
 /********************************************************************************************/
 /********************************************************************************************/
 /*!
- 	 \brief	This module changes the system status according to the pressed button and the current state.
+ 	 \brief	This function changes the system status according to the pressed button and the current state.
  	 \return void
  */
 void updateSystemState();
@@ -89,7 +89,7 @@ void updateSystemState();
 /********************************************************************************************/
 /********************************************************************************************/
 /*!
- 	 \brief	This module changes the screen information according to the currentState.
+ 	 \brief	This function changes the screen information according to the currentState.
  	 \return void
  */
 void updateScreen();
@@ -101,5 +101,21 @@ void updateScreen();
  	 \return the current system status direction.
  */
 SystemStatus* getSystemStatus();
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This function changes pressed button in the systemState variable.
+ 	 \return void
+ */
+void setPressedButton(Buttons pressed);
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This function updates the alarm state.
+ 	 \return void
+ */
+void changeAlarm(StatusTurn status);
 
 #endif /* STATUS_H_ */

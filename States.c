@@ -11,28 +11,25 @@
 #include "MK64F12.h"
 #include "States.h"
 
-SystemStatus systemState = {//variable where we store the system states
+static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
 		MAIN_STATE,
 		ERROR_STATE,
 		{OFF, 30, 30},
 		{25, CELSIUS, CELSIUS},
 		{ON, ON, 80, 80},
-		0	 //TODO check initial frecuency
+		0	 //TODO check initial frequency
 };
 
 void checkButtons(){
-	//TODO check buttons interruptions.
-
-
-	//if the screen state is different than the current state, update the screen image.
-	if(systemState.currentState == systemState.screenState) updateScreen();
 	//if a button was pushed update the screen image.
 	if(NO_BUTTON != systemState.pressedButton){
+		systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 		updateSystemState();
-		updateScreen();
 	}
-	systemState.pressedButton = NO_BUTTON;
+	//if the screen state is different than the current state, update the screen image.
+	if(systemState.currentState != systemState.screenState) updateScreen();
+
 }
 
 void updateSystemState(){
@@ -219,4 +216,11 @@ void updateScreen(){
 
 SystemStatus* getSystemStatus(){
 	return &systemState;//get the direction of the system state variable
+}
+
+void setPressedButton(Buttons pressedBttn){
+	systemState.pressedButton = pressedBttn;
+}
+void changeAlarm(StatusTurn status){
+	systemState.alarm.alarmStatus = status;
 }
