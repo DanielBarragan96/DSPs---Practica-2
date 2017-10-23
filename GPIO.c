@@ -18,10 +18,22 @@ void PORTC_IRQHandler(){
 	GPIO_intrStatusFlag.flagPortC = TRUE;
 	GPIO_clearInterrupt(GPIO_C);
 	//Check buttons interruptions.
-	if	   (TRUE == GPIO_readPIN(GPIO_C, BIT5)) setPressedButton(B0);
-	else if(TRUE == GPIO_readPIN(GPIO_C, BIT7)) setPressedButton(B1);
-	else if(TRUE == GPIO_readPIN(GPIO_C, BIT0)) setPressedButton(B2);
-	else if(TRUE == GPIO_readPIN(GPIO_C, BIT9)) setPressedButton(B3);
+	if	   (TRUE == GPIO_readPIN(GPIO_C, BIT5)){
+		setPressedButton(B0);
+		return;
+	}
+	else if(TRUE == GPIO_readPIN(GPIO_C, BIT7)){
+		setPressedButton(B1);
+		return;
+	}
+	else if(TRUE == GPIO_readPIN(GPIO_C, BIT0)){
+		setPressedButton(B2);
+		return;
+	}
+	else if(TRUE == GPIO_readPIN(GPIO_C, BIT9)){
+		setPressedButton(B3);
+		return;
+	}
 	else if(TRUE == GPIO_readPIN(GPIO_C, BIT8)) setPressedButton(B4);
 	else if(TRUE == GPIO_readPIN(GPIO_C, BIT1)) setPressedButton(B5);
 	else setPressedButton(NO_BUTTON);

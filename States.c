@@ -25,8 +25,8 @@ static SystemStatus systemState = {//variable where we store the system states
 void checkButtons(){
 	//if a button was pushed update the screen image.
 	if(NO_BUTTON != systemState.pressedButton){
-		systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 		updateSystemState();
+		systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 	}
 	//if the screen state is different than the current state, update the screen image.
 	if(systemState.currentState != systemState.screenState) updateScreen();
@@ -35,7 +35,7 @@ void checkButtons(){
 
 void updateSystemState(){
 	//Depending on the pressed button and the state this switch will update the system information.
-	switch(systemState.screenState){//first check in which menu we are, then handle the input
+	switch(systemState.screenState){//TODO SCREENfirst check in which menu we are, then handle the input
 		case MAIN_STATE:{
 					if(B0 == systemState.pressedButton)//in the first case only if B0 was pressed...
 							 systemState.currentState = MAIN_MENU_STATE;;//enter the MAIN_MENU_STATE
