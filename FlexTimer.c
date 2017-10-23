@@ -42,7 +42,7 @@ void FlexTimer_Init()
 		/**Selects the Edge-Aligned PWM mode mode*/
 		FTM0->CONTROLS[0].CnSC = FLEX_TIMER_MSB | FLEX_TIMER_ELSB;
 		/**Assign a duty cycle of 50%*/
-		FTM0->CONTROLS[0].CnV = FTM0->MOD/2;//50% work cycle
+		FTM0->CONTROLS[0].CnV = (FTM0->MOD*8/10);//80% work cycle
 		/**Configure the times*/
 		FTM0->SC = FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
 }

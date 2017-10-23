@@ -12,12 +12,12 @@ void checkAlarm(){
 	SystemStatus actualStatus = *(getSystemStatus());
 	//Verify if the alarm has to turn off
 	//TODO Change to read the measurement of temperature
-	if(ON == actualStatus.alarm.alarmStatus && actualStatus.alarm.alarmaValue >= actualStatus.alarm.alarmaValue){
+	if(ON == actualStatus.alarm.alarmStatus && actualStatus.alarm.alarmaValue >= (actualStatus.alarm.alarmaValue -1)){
 		GPIO_clearPIN(GPIO_C, BIT3);
 		changeAlarm(OFF);
 	}
 	//TODO Change to read the measurement of temperature
-	else if(OFF == actualStatus.alarm.alarmStatus && actualStatus.alarm.alarmaValue <= actualStatus.alarm.alarmaValue){
+	else if(OFF == actualStatus.alarm.alarmStatus && actualStatus.alarm.alarmaValue <= (actualStatus.alarm.alarmaValue-1)){
 		GPIO_setPIN(GPIO_C, BIT3);
 		changeAlarm(ON);
 	}
