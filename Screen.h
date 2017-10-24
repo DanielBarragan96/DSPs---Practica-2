@@ -8,6 +8,7 @@
 #ifndef SCREEN_H_
 #define SCREEN_H_
 
+void Screen_Config(ProgrmaState state);
 
 
 #endif /* SCREEN_H_ */
