@@ -25,7 +25,6 @@ static SystemStatus systemState = {//variable where we store the system states
 void checkButtons(){
 	GPIO_clearIRQStatus(GPIO_C);
 	//if a button was pushed update the screen image.
-	updateSystemState();
 	systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 }
 
@@ -209,10 +208,6 @@ void resetMonitors(){//resets all the monitors with the current states
 	systemState.temperature.typeDeegreesMonitor = systemState.temperature.typeDeegrees;
 	systemState.motor.motorStatusMonitor = systemState.motor.motorStatus;
 	systemState.motor.velocityMonitor = systemState.motor.velocityValue;
-}
-
-void updateScreen(){
-	//TODO change to SPI module
 }
 
 SystemStatus* getSystemStatus(){
