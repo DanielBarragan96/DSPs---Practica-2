@@ -41,7 +41,7 @@ void initMain(){
 		//Alarm
 		GPIO_pinControlRegister(GPIO_C,BIT10,&pinControlRegisterMux1);
 		//LM35
-		//GPIO_pinControlRegister(GPIO_B,BIT2,&pinControlRegisterMux1);
+		GPIO_pinControlRegister(GPIO_B,BIT2,&pinControlRegisterMux1);
 
 		/**Assigns a safe value to the output pin21 of the GPIOB*/
 		GPIOB->PDOR |= 0x00200000;/**Blue led off*/
