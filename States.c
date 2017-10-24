@@ -138,7 +138,7 @@ void updateSystemState(){
 				case B2:{//this increases the motor velocity motor by 5%
 					systemState.motor.velocityMonitor += 5;
 					if(VEL_MAX < systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
- 				  return;
+					return;
 				}
 				case B3:{//sets the new velocity of the motor
 					systemState.motor.velocityValue = systemState.motor.velocityMonitor;

@@ -14,6 +14,7 @@
 #include "States.h"
 #include "Alarm.h"
 #include "Motor.h"
+#include "ADC.h"
 
 int main(void) {
 
@@ -30,6 +31,8 @@ int main(void) {
     	checkAlarm();//update the alarm status according to systemStatus.
 
     	checkMotor();//check motor and adjust to the desired value in systemStatus variable.
+
+    	ADC_Values();
     }
     return 0 ;
 }

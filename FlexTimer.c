@@ -9,8 +9,6 @@
 	    Add configuration structures.
  */
 
-
-
 #include "FlexTimer.h"
 #include "MK64F12.h"
 
