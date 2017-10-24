@@ -45,17 +45,17 @@ void Screen_Config(ProgrmaState state)
 	switch(state)
 	{
 	case MAIN_STATE:
-		LCDNokia_clear();
-		LCDNokia_gotoXY(25,0);
+        LCDNokia_clear();
+		LCDNokia_gotoXY(10,0);
 		LCDNokia_sendString(main_Vel);
 		delay(65000);
-		LCDNokia_gotoXY(30,1);
+		LCDNokia_gotoXY(38,1);
 		LCDNokia_sendString(multi_perc);
 		delay(65000);
-		LCDNokia_gotoXY(25,2);
+		LCDNokia_gotoXY(7,2);
 		LCDNokia_sendString(main_Temp);
 		delay(65000);
-		LCDNokia_gotoXY(30,3);
+		LCDNokia_gotoXY(38,3);
 		LCDNokia_sendString(multi_Cel);
 		delay(65000);
 	break;
