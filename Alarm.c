@@ -20,5 +20,6 @@ void checkAlarm(){
 	else if(OFF == actualAlarm.alarmStatus && 31 <= actualAlarm.alarmaValue){
 		GPIO_setPIN(GPIO_C, BIT10);
 		changeAlarm(ON);
+		decreaseSpeed();
 	}
 }

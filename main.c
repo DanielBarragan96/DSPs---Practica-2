@@ -22,7 +22,7 @@ int main(void) {
 	SPI_init();//configure the SPI (screen)
 	FlexTimer_Init();//configure the FlexTimer (motor)
 
-	updateScreen();//set initial image of the screen
+	//updateScreen();//set initial image of the screen
 
     while(1) {//the systemStatus variable is located in States.c, and stores the system information.
 
