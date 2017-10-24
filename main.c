@@ -33,4 +33,3 @@ int main(void) {
     }
     return 0 ;
 }
-//if(TRUE == GPIO_getIRQStatus(GPIO_C)) PORTC_IRQHandler();

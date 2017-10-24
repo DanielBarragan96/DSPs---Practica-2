@@ -9,7 +9,6 @@
 #define ADC_H_
 
 #include "DataTypeDefinitions.h"
-#include "MK64F12.h"
 
 //To select low or normal power
 typedef enum{
@@ -47,7 +46,6 @@ typedef enum{
 }ADC_CFG1_ADICLK;
 
 void ADC_init(ADC_MODE mode);
-
 uint16 ADC_Values();
 
 #endif /* ADC_H_ */
