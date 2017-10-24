@@ -25,6 +25,8 @@ static SystemStatus systemState = {//variable where we store the system states
 void checkButtons(){
 	GPIO_clearIRQStatus(GPIO_C);
 	//if a button was pushed update the screen image.
+	updateSystemState();
+	
 	systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 }
 
