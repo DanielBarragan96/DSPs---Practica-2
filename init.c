@@ -39,7 +39,7 @@ void initMain(){
 		GPIO_pinControlRegister(GPIO_C,BIT8,&pinControlRegisterInputInterrupt);
 		GPIO_pinControlRegister(GPIO_C,BIT1,&pinControlRegisterInputInterrupt);
 		//Alarm
-		GPIO_pinControlRegister(GPIO_C,BIT3,&pinControlRegisterMux1);
+		GPIO_pinControlRegister(GPIO_C,BIT10,&pinControlRegisterMux1);
 
 		/**Assigns a safe value to the output pin21 of the GPIOB*/
 		GPIOB->PDOR |= 0x00200000;/**Blue led off*/
@@ -59,7 +59,7 @@ void initMain(){
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT8);
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT1);
 		//Alarm
-		GPIO_dataDirectionPIN(GPIO_C,GPIO_OUTPUT,BIT3);
+		GPIO_dataDirectionPIN(GPIO_C,GPIO_OUTPUT,BIT10);
 
 		/**Sets the threshold for interrupts, if the interrupt has higher priority constant that the BASEPRI, the interrupt will not be attended*/
 		NVIC_setBASEPRI_threshold(PRIORITY_5);

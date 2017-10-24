@@ -31,7 +31,7 @@ void checkButtons(){
 
 void updateSystemState(){
 	//Depending on the pressed button and the state this switch will update the system information.
-	switch(systemState.screenState){//TODO SCREENfirst check in which menu we are, then handle the input
+	switch(systemState.currentState){//TODO SCREENfirst check in which menu we are, then handle the input
 		case MAIN_STATE:{
 					if(B0 == systemState.pressedButton)//in the first case only if B0 was pressed...
 							 systemState.currentState = MAIN_MENU_STATE;;//enter the MAIN_MENU_STATE
@@ -137,7 +137,7 @@ void updateSystemState(){
 				}
 				case B2:{//this increases the motor velocity motor by 5%
 					systemState.motor.velocityMonitor += 5;
-					if(VEL_MAX> systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
+					if(VEL_MAX < systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
 					return;
 				}
 				case B3:{//sets the new velocity of the motor
@@ -220,8 +220,8 @@ SystemStatus* getSystemStatus(){
 }
 
 void setPressedButton(Buttons pressedBttn){
-	systemState.pressedButton = pressedBttn;
+	systemState.pressedButton = pressedBttn;//set the currently pressed button
 }
 void changeAlarm(StatusTurn status){
-	systemState.alarm.alarmStatus = status;
+	systemState.alarm.alarmStatus = status;//update alarm state
 }

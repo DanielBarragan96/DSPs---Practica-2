@@ -18,16 +18,20 @@ static uint8 motorCycle = 80;
 void checkMotor(){
 	SystemStatus actualSystem = *(getSystemStatus());
 
+	//if the motor has the current motor speed do nothing
 	if(motorCycle == actualSystem.motor.velocityValue) return;
 
-	if(motorCycle < actualSystem.motor.velocityValue){
+	//increase the motor velocity using the PWM
+	if(motorCycle < actualSystem.motor.velocityValue){//if we need to increase the speed
 		motorCycle += 5;
-		if(MOTOR_MAX_VEL < motorCycle)	motorCycle = 100;
+		if(MOTOR_MAX_VEL < motorCycle)	motorCycle = 100;//check speed limit
 	}
-	else if(motorCycle > actualSystem.motor.velocityValue){
+	else if(motorCycle > actualSystem.motor.velocityValue){//if we need to decrease the speed
 		motorCycle -= 5;
-		if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;
+		if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;//check speed limit
 	}
+	//Update the flex timer value
 	FlexTimer_updateCHValue(motorCycle);
 
+	//TODO PIT for decelerate the motor
 }
