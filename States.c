@@ -23,14 +23,10 @@ static SystemStatus systemState = {//variable where we store the system states
 };
 
 void checkButtons(){
+	GPIO_clearIRQStatus(GPIO_C);
 	//if a button was pushed update the screen image.
-	if(NO_BUTTON != systemState.pressedButton){
-		updateSystemState();
-		systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
-	}
-	//if the screen state is different than the current state, update the screen image.
-	if(systemState.currentState != systemState.screenState) updateScreen();
-
+	updateSystemState();
+	systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 }
 
 void updateSystemState(){
@@ -136,10 +132,12 @@ void updateSystemState(){
 				}
 				case B1:{//this decreases the motor velocity motor by 5%
 					systemState.motor.velocityMonitor -= 5;
+					if(VEL_LOW > systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 5;
 					return;
 				}
 				case B2:{//this increases the motor velocity motor by 5%
 					systemState.motor.velocityMonitor += 5;
+					if(VEL_MAX> systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
 					return;
 				}
 				case B3:{//sets the new velocity of the motor
@@ -178,10 +176,12 @@ void updateSystemState(){
 							}
 							case B4:{//this decreases the motor velocity motor by 5%
 								systemState.motor.velocityMonitor -= 5;
+								if(VEL_LOW > systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 5;
 								return;
 							}
 							case B5:{//this increases the motor velocity motor by 5%
 								systemState.motor.velocityMonitor += 5;
+								if(VEL_MAX < systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
 								return;
 							}
 							case NO_BUTTON:
@@ -220,8 +220,8 @@ SystemStatus* getSystemStatus(){
 }
 
 void setPressedButton(Buttons pressedBttn){
-	systemState.pressedButton = pressedBttn;
+	systemState.pressedButton = pressedBttn;//set the currently pressed button
 }
 void changeAlarm(StatusTurn status){
-	systemState.alarm.alarmStatus = status;
+	systemState.alarm.alarmStatus = status;//update alarm state
 }

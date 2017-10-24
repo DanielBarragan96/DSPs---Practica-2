@@ -30,11 +30,13 @@ typedef enum{ OFF, ON }StatusTurn;
 typedef enum{ NO_BUTTON, B0, B1, B2, B3, B4, B5 }Buttons;
 /*Type for the temperature type*/
 typedef enum{ CELSIUS, FAHRENHEIT }DEGREES;
+/*Type for the velocity limits*/
+typedef enum{VEL_LOW = 5,VEL_MAX = 100}Velocity_Limits;
 /*Type for the alarm settings*/
 typedef struct{
 	StatusTurn alarmStatus;//current value of the alarm
-	uint8 alarmaValue;//value at which the alarm should sound
-	uint8 alarmMonitor;//desired change of the value of alarmValue
+	ufloat32 alarmaValue;//value at which the alarm should sound
+	ufloat32 alarmMonitor;//desired change of the value of alarmValue
 }Alarm;
 /*Type for the showed temperature*/
 typedef struct{
@@ -46,8 +48,8 @@ typedef struct{
 typedef struct{
 	StatusTurn motorStatus;//current motor status
 	StatusTurn motorStatusMonitor;//desired value of motorStatus
-	uint8 velocityValue;//current motor velocity
-	uint8 velocityMonitor;//desired velocity for the motor
+	ufloat32 velocityValue;//current motor velocity
+	ufloat32 velocityMonitor;//desired velocity for the motor
 }Motor;
 /*Structure for the sytem status*/
 typedef struct{
@@ -57,7 +59,7 @@ typedef struct{
 	Alarm alarm;
 	Temperature temperature;
 	Motor motor;
-	uint32 frecuency;
+	ufloat32 frecuency;
 }SystemStatus;//this type of struct contents the required system information
 
 /********************************************************************************************/
