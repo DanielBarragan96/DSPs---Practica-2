@@ -118,16 +118,16 @@ void Screen_Config(ProgrmaState state)
 	break;
 	case MANUAL_STATE:
 		LCDNokia_clear();
-		LCDNokia_gotoXY(20,0);
+		LCDNokia_gotoXY(5,0);
 		LCDNokia_sendString(sub4_Ctrl);
 		delay(65000);
-		LCDNokia_gotoXY(30,1);
+		LCDNokia_gotoXY(50,1);
 		LCDNokia_sendString(multi_perc);
 		delay(65000);
-		LCDNokia_gotoXY(7,2);
+		LCDNokia_gotoXY(0,2);
 		LCDNokia_sendString(sub4_Change);
 		delay(65000);
-		LCDNokia_gotoXY(20,3);
+		LCDNokia_gotoXY(5,5);
 		LCDNokia_sendString(sub4_Change2);
 		delay(65000);
 	break;
