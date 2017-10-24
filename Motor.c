@@ -13,25 +13,27 @@
 #include "Motor.h"
 #include "States.h"
 
-static uint8 motorCycle = 80;
+//physical actual value of the motor velocity
+static ufloat32 motorCycle = 80;
 
 void checkMotor(){
-	SystemStatus actualSystem = *(getSystemStatus());
+	//get current desired motor speed
+	ufloat32 systemVel = (getSystemStatus())->motor.velocityValue;
 
 	//if the motor has the current motor speed do nothing
-	if(motorCycle == actualSystem.motor.velocityValue) return;
+	if(motorCycle == systemVel) return;
 
 	//increase the motor velocity using the PWM
-	if(motorCycle < actualSystem.motor.velocityValue){//if we need to increase the speed
+	if(motorCycle < systemVel){//if we need to increase the speed
 		motorCycle += 5;
 		if(MOTOR_MAX_VEL < motorCycle)	motorCycle = 100;//check speed limit
 	}
-	else if(motorCycle > actualSystem.motor.velocityValue){//if we need to decrease the speed
+	else if(motorCycle > systemVel){//if we need to decrease the speed
 		motorCycle -= 5;
 		if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;//check speed limit
 	}
 	//Update the flex timer value
-	FlexTimer_updateCHValue(motorCycle);
+	FlexTimer_updateCHValue(FTM0->MOD*motorCycle/100);
 
 	//TODO PIT for decelerate the motor
 }
