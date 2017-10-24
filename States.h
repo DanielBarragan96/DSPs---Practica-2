@@ -40,7 +40,7 @@ typedef struct{
 }Alarm;
 /*Type for the showed temperature*/
 typedef struct{
-	uint16 celsiusValue;//the temperature value in celsius
+	ufloat32 celsiusValue;//the temperature value in celsius
 	DEGREES typeDeegreesMonitor;//desired change of calesiusValue
 	DEGREES typeDeegrees;//The format of the temperature showed in the screen
 }Temperature;
