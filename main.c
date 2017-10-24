@@ -32,7 +32,7 @@ int main(void) {
 
     	checkMotor();//check motor and adjust to the desired value in systemStatus variable.
 
-    	ADC_Values();
+    	//ADC_Values();//check the LM35 temperature.
     }
     return 0 ;
 }
