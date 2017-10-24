@@ -133,10 +133,10 @@ void Screen_Config(ProgrmaState state)
 	break;
 	case FRECUENCY_STATE:
 		LCDNokia_clear();
-		LCDNokia_gotoXY(20,1);
+		LCDNokia_gotoXY(10,1);
 		LCDNokia_sendString(sub5_Freq);
 		delay(65000);
-		LCDNokia_gotoXY(25,2);
+		LCDNokia_gotoXY(28,2);
 		LCDNokia_sendString(sub5_Hz);
 		delay(65000);
 	break;
