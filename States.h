@@ -43,6 +43,7 @@ typedef struct{
 /*Type for the showed temperature*/
 typedef struct{
 	ufloat32 celsiusValue;//the temperature value in celsius
+	ufloat32 fahrenheitValue;//the temperature value in fahrenheit
 	DEGREES typeDeegreesMonitor;//desired change of calesiusValue
 	DEGREES typeDeegrees;//The format of the temperature showed in the screen
 }Temperature;
