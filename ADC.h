@@ -45,7 +45,10 @@ typedef enum{
 	AT_CLOCK,
 	AS_CLOCK
 }ADC_CFG1_ADICLK;
+<<<<<<< HEAD
 
+=======
+>>>>>>> adc-read-lm35-w
 /********************************************************************************************/
 /********************************************************************************************/
 /********************************************************************************************/
@@ -67,5 +70,6 @@ void ADC_init(ADC_CFG1_DLPC power, ADC_CFG1_ADIV div, ADC_CFG1_ADLSMP sample, AD
  	 \return the values the adc read.
  */
 uint16 ADC_Values();
+ufloat32 setMeasuredValue();
 
 #endif /* ADC_H_ */

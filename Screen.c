@@ -13,11 +13,42 @@
 #include "Screen.h"
 #include "GlobalFunctions.h"
 
+static uint8 conversion_f[6];  // string value we're gonna inyect into the screen when transforming from float to string
+static uint8 conversion[2];  // string value we're gonna inyect into the screen when transforming from float to string
+
 void float_String(ufloat32 fl)
 {
 	uint16 entero = (int)fl;	//makes cast to get the integer part of the float given
+<<<<<<< HEAD
 	ufloat32 flotante = (fl-entero)*100; //multiplies by 100 the float decimal value
 	uint16 helper = (int)flotante; // makes cast to get get the integer part of the float decimals
+=======
+
+	/*uint values created to hold each character of the number*/
+	uint16 decenas = 0;
+	uint16 unidades = 0;
+
+	/*while eliminating the biggest value of the whole number and the decimal part of the float it stores the value in the variables created*/
+	decenas = (uint16) entero/10;
+	entero = entero-(decenas*10);
+	unidades = entero;
+
+	/*ascii convertion of the numbers*/
+	decenas+=48;
+	unidades+=48;
+
+	/*saves the value of the numbers on the conversion array*/
+	conversion[0] = decenas;
+	conversion[1] = unidades;
+}
+
+void float_String_F(ufloat32 fl)
+{
+	uint16 entero = (int)fl;	//makes cast to get the integer part of the float given
+	ufloat32 flotante = (fl-entero)*100;//multiplies by 100 the float decimal value
+	uint16 helper = (int)flotante;// makes cast to get get the integer part of the float decimals
+
+>>>>>>> adc-read-lm35-w
 	/*uint values created to hold each character of the number*/
 	uint16 centenas = 0;
 	uint16 decenas = 0;
@@ -50,6 +81,8 @@ void float_String(ufloat32 fl)
 	conversion[4] = decimas;
 	conversion[5] = centesimas;
 }
+
+
 
 void Screen_Config(ProgrmaState state)
 {
@@ -124,7 +157,11 @@ void Screen_Config(ProgrmaState state)
 		delay(65000);
 	break;
 	case ALARMA_STATE:
+<<<<<<< HEAD
 		if((B2 | B1) == getSystemStatus()->pressedButton) // if either the b1 or the b2 were pressed shows the value the alarm is gonna be switched to instead of its current value
+=======
+		if((B2 == getSystemStatus()->pressedButton) || (B1 == getSystemStatus()->pressedButton)) // if either the b1 or the b2 were pressed shows the value the alarm is gonna be switched to instead of its current value
+>>>>>>> adc-read-lm35-w
 		{
 	        LCDNokia_clear();
 			LCDNokia_gotoXY(20,1);
@@ -180,7 +217,11 @@ void Screen_Config(ProgrmaState state)
 		}
 		else if(FAHRENHEIT == getSystemStatus()->temperature.typeDeegrees) // if the current system value is fahrenheit shows the current fahrenheit value and its sign
 		{
+<<<<<<< HEAD
 			float_String(getSystemStatus()->temperature.fahrenheitValue); // converts the current fahrenheit value into a string
+=======
+			float_String_F(getSystemStatus()->temperature.fahrenheitValue); // converts the current fahrenheit value into a string
+>>>>>>> adc-read-lm35-w
 			LCDNokia_clear();
 			LCDNokia_gotoXY(0,1);
 			LCDNokia_sendString(sub2_For_Temp);
@@ -249,13 +290,19 @@ void Screen_Config(ProgrmaState state)
 		}
 	break;
 	case MANUAL_STATE:
+<<<<<<< HEAD
 			if((B4|B5) == getSystemStatus()->pressedButton) // if either B4 or B5 we're pressed shows the value the motor is gonna be switched to
+=======
+			if((B4 == getSystemStatus()->pressedButton) || (B5 == getSystemStatus()->pressedButton)) // if either B4 or B5 we're pressed shows the value the motor is gonna be switched to
+>>>>>>> adc-read-lm35-w
 			{
 				LCDNokia_clear();
 				LCDNokia_gotoXY(5,0);
 				LCDNokia_sendString(sub4_Ctrl);
 				delay(65000);
 				float_String(getSystemStatus()->motor.velocityMonitor); // converts value the motor is gonna be switched to into a string
+<<<<<<< HEAD
+=======
 				LCDNokia_gotoXY(30,1);
 				LCDNokia_sendString(conversion);
 				delay(65000);
@@ -274,6 +321,7 @@ void Screen_Config(ProgrmaState state)
 				LCDNokia_sendString(sub4_Ctrl);
 				delay(65000);
 				float_String(getSystemStatus()->motor.velocityValue);  // converts current motor value into string
+>>>>>>> adc-read-lm35-w
 				LCDNokia_gotoXY(30,1);
 				LCDNokia_sendString(conversion);
 				delay(65000);
@@ -286,6 +334,27 @@ void Screen_Config(ProgrmaState state)
 				LCDNokia_gotoXY(5,5);
 				LCDNokia_sendString(sub4_Change2);
 				delay(65000);
+<<<<<<< HEAD
+			}else{	// if we havent pressed anything shows the current motor value
+				LCDNokia_clear();
+				LCDNokia_gotoXY(5,0);
+				LCDNokia_sendString(sub4_Ctrl);
+				delay(65000);
+				float_String(getSystemStatus()->motor.velocityValue);  // converts current motor value into string
+				LCDNokia_gotoXY(30,1);
+				LCDNokia_sendString(conversion);
+				delay(65000);
+				LCDNokia_gotoXY(50,1);
+				LCDNokia_sendString(multi_perc);
+				delay(65000);
+				LCDNokia_gotoXY(0,2);
+				LCDNokia_sendString(sub4_Change);
+				delay(65000);
+				LCDNokia_gotoXY(5,5);
+				LCDNokia_sendString(sub4_Change2);
+				delay(65000);
+=======
+>>>>>>> adc-read-lm35-w
 			}
 	break;
 	case FRECUENCY_STATE:

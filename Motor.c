@@ -39,3 +39,6 @@ ufloat32 getMotorCurrentValue(){
 	return motorCycle;
 }
 
+void setMotorCurrentValue(ufloat32 val){
+		motorCycle = val;
+}
