@@ -210,7 +210,7 @@ void SPI_sendOneByte(SPI_ChannelType channel, uint8 Data);
  	 \brief	It configures the SPI for transmission
  	 \return void
  */
-void SPI_init();
+void SPI_init(const SPI_ConfigType* configure);
 
 
 #endif /* SPI_H_ */

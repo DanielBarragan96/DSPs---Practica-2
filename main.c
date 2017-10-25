@@ -15,14 +15,15 @@
 #include "Alarm.h"
 #include "Motor.h"
 #include "ADC.h"
+#include "Screen.h"
 
 int main(void) {
 
 	initMain();//configure the Kinetis
-	SPI_init();//configure the SPI (screen)
 	FlexTimer_Init();//configure the FlexTimer (motor)
 
 	//updateScreen();//set initial image of the screen
+	Screen_Config(MAIN_STATE);
 
     while(1) {//the systemStatus variable is located in States.c, and stores the system information.
 

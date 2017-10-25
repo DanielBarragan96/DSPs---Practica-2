@@ -2,19 +2,6 @@
 #include "DatatypeDefinitions.h"
 #include "SPI.h"
 
-/** \brief This is the configuration structure to configure the LCD.
- * Note that is constants and it is because is only a variable used for configuration*/
-const SPI_ConfigType SPI_Config = {
-		SPI_DISABLE_FIFO,
-		SPI_LOW_POLARITY,
-		SPI_LOW_PHASE,
-		SPI_MSB,
-		SPI_0,
-		SPI_MASTER,
-		GPIO_MUX2,
-		SPI_BAUD_RATE_2,
-		SPI_FSIZE_8,
-		{GPIO_D,BIT1,BIT2}};
 
 //depending on which spi you only enable bit 14 of the Module Configuration Register
 static void SPI_enable(SPI_ChannelType channel)
@@ -385,9 +372,8 @@ void SPI_sendOneByte(SPI_ChannelType channel, uint8 Data)
 	}
 }
 
-void SPI_init()
+void SPI_init(const SPI_ConfigType* configure)
 {
-	const SPI_ConfigType* configure = &SPI_Config;
 	//start clock gate
 	SPI_clk(configure->SPI_Channel);
 	//enables spi

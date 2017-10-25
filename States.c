@@ -11,6 +11,7 @@
 #include "MK64F12.h"
 #include "Motor.h"
 #include "States.h"
+#include "Screen.h"
 
 static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
@@ -26,7 +27,7 @@ void checkButtons(){
 	GPIO_clearIRQStatus(GPIO_C);
 	//if a button was pushed update the screen image.
 	updateSystemState();
-
+	Screen_Config(systemState.currentState);
 	systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 }
 
