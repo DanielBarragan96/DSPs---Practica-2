@@ -7,13 +7,12 @@
 #include "DataTypeDefinitions.h"
 #include "GPIO.h"
 #include "States.h"
-#include "ADC.h"
 
 ufloat32 decreaseQuantitie = 0;
 
 void checkAlarm(){
 	Alarm actualAlarm = (getSystemStatus())->alarm;
-	ufloat32 measuredAlarm = setMeasuredValue();
+	ufloat32 measuredAlarm = 0;
 	ufloat32 alarmLimit = getSystemStatus()->alarm.alarmaValue;
 	//Verify if the alarm has to turn off
 	//TODO Change to read the measurement of temperature
