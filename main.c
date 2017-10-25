@@ -25,6 +25,7 @@ int main(void) {
 
 	//updateScreen();//set initial image of the screen
 	Screen_Config(MAIN_STATE);
+	checkMotor();
 
     while(1) {//the systemStatus variable is located in States.c, and stores the system information.
 

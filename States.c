@@ -224,4 +224,5 @@ void changeAlarm(StatusTurn status){
 }
 void decreaseSpeed(){
 	systemState.motor.velocityValue -= systemState.alarm.decrementValue;//decreases motor speed
+	if(VEL_LOW > systemState.motor.velocityValue) systemState.motor.velocityValue = 5;//if the velocity is minor than the limit reset
 }

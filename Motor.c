@@ -30,7 +30,7 @@ void checkMotor(){
 		if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;//check speed limit
 	}
 	//Update the flex timer value
-	FlexTimer_updateCHValue(FTM0->MOD*motorCycle/100);
+	FlexTimer_updateCHValue(250*motorCycle/100);
 
 	//TODO PIT for decelerate the motor
 }

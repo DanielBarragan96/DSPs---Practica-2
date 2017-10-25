@@ -16,14 +16,14 @@ void checkAlarm(){
 	ufloat32 alarmLimit = getSystemStatus()->alarm.alarmaValue;
 	//Verify if the alarm has to turn off
 	//TODO Change to read the measurement of temperature
-	if(alarmLimit > actualAlarm.alarmaValue){//actualStatus.alarm.alarmaValue >= (actualStatus.alarm.alarmaValue -1)
+	if(alarmLimit > measuredAlarm){//actualStatus.alarm.alarmaValue >= (actualStatus.alarm.alarmaValue -1)
 		if(ON == actualAlarm.alarmStatus){
 			GPIO_clearPIN(GPIO_C, BIT10);
 			changeAlarm(OFF);
 		}
 	}
 	//TODO Change to read the measurement of temperature
-	else if(alarmLimit <= actualAlarm.alarmaValue){
+	else if(alarmLimit <= measuredAlarm){
 		if(OFF == actualAlarm.alarmStatus){
 			GPIO_setPIN(GPIO_C, BIT10);
 			changeAlarm(ON);
