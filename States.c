@@ -33,7 +33,7 @@ void initStates(){
 		}
 		systemState.motor.velocityValue = castingToFive;//Measured by the ADC
 		systemState.motor.velocityMonitor = systemState.motor.velocityValue;//also update the monitor variable
-		setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
+		//setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
 }
 
 void checkButtons(){
