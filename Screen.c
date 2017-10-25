@@ -13,8 +13,6 @@
 #include "Screen.h"
 #include "GlobalFunctions.h"
 
-static uint8 conversion[6];
-
 void float_String(ufloat32 fl)
 {
 	uint16 entero = (int)fl;
@@ -79,9 +77,13 @@ void Screen_Config(ProgrmaState state)
 	switch(state)
 	{
 	case MAIN_STATE:
+		float_String(getSystemStatus()->motor.velocityValue);
         LCDNokia_clear();
 		LCDNokia_gotoXY(10,0);
 		LCDNokia_sendString(main_Vel);
+		delay(65000);
+		LCDNokia_gotoXY(25,1);
+		LCDNokia_sendString(conversion);
 		delay(65000);
 		LCDNokia_gotoXY(38,1);
 		LCDNokia_sendString(multi_perc);
@@ -89,7 +91,11 @@ void Screen_Config(ProgrmaState state)
 		LCDNokia_gotoXY(7,2);
 		LCDNokia_sendString(main_Temp);
 		delay(65000);
-		LCDNokia_gotoXY(38,3);
+		float_String(getSystemStatus()->temperature.celsiusValue);
+		LCDNokia_gotoXY(25,3);
+		LCDNokia_sendString(conversion);
+		delay(65000);
+		LCDNokia_gotoXY(40,3);
 		LCDNokia_sendString(multi_Cel);
 		delay(65000);
 	break;
@@ -116,6 +122,18 @@ void Screen_Config(ProgrmaState state)
 		LCDNokia_gotoXY(20,1);
 		LCDNokia_sendString(sub1_Al);
 		delay(65000);
+		if((B2 | B1) == getSystemStatus()->pressedButton)
+		{
+			float_String(getSystemStatus()->alarm.alarmMonitor);
+			LCDNokia_gotoXY(25,2);
+			LCDNokia_sendString(conversion);
+			delay(65000);
+		}else{
+			float_String(getSystemStatus()->alarm.alarmaValue);
+			LCDNokia_gotoXY(25,2);
+			LCDNokia_sendString(conversion);
+			delay(65000);
+		}
 		LCDNokia_gotoXY(40,2);
 		LCDNokia_sendString(multi_Cel);
 		delay(65000);
@@ -126,12 +144,16 @@ void Screen_Config(ProgrmaState state)
 	case FORMAT_STATE:
 		if(CELSIUS == getSystemStatus()->temperature.typeDeegrees)
 		{
+			float_String(getSystemStatus()->temperature.celsiusValue);
 			LCDNokia_clear();
 			LCDNokia_gotoXY(0,1);
 			LCDNokia_sendString(sub2_For_Temp);
 			delay(65000);
 			LCDNokia_gotoXY(5,2);
 			LCDNokia_sendString(sub2_Temp);
+			delay(65000);
+			LCDNokia_gotoXY(40,2);
+			LCDNokia_sendString(conversion);
 			delay(65000);
 			LCDNokia_gotoXY(62,2);
 			LCDNokia_sendString(multi_Cel);
@@ -142,42 +164,79 @@ void Screen_Config(ProgrmaState state)
 		}
 		else if(FAHRENHEIT == getSystemStatus()->temperature.typeDeegrees)
 		{
-			float_String(138.52);
+			float_String(getSystemStatus()->temperature.fahrenheitValue);
 			LCDNokia_clear();
 			LCDNokia_gotoXY(0,1);
 			LCDNokia_sendString(sub2_For_Temp);
 			delay(65000);
-			LCDNokia_gotoXY(15,2);
+			LCDNokia_gotoXY(5,2);
 			LCDNokia_sendString(sub2_Temp);
 			delay(65000);
-			LCDNokia_gotoXY(15,3);
+			LCDNokia_gotoXY(40,2);
 			LCDNokia_sendString(conversion);
 			delay(65000);
-			LCDNokia_gotoXY(62,3);
+			LCDNokia_gotoXY(62,2);
 			LCDNokia_sendString(sub2_Far);
 			delay(65000);
-			LCDNokia_gotoXY(0,4);
+			LCDNokia_gotoXY(0,3);
 			LCDNokia_sendString(sub2_Change);
 			delay(65000);
 		}
 	break;
 	case CHANGE_STATE:
-		LCDNokia_clear();
-		LCDNokia_gotoXY(10,1);
-		LCDNokia_sendString(sub3_Decre);
-		delay(65000);
-		LCDNokia_gotoXY(45,2);
-		LCDNokia_sendString(multi_perc);
-		delay(65000);
-		LCDNokia_gotoXY(0,3);
-		LCDNokia_sendString(multi_Change);
-		delay(65000);
+		if(B1 == getSystemStatus()->pressedButton)
+		{
+			float_String(getSystemStatus()->alarm.decrementMonitor);
+			LCDNokia_clear();
+			LCDNokia_gotoXY(10,1);
+			LCDNokia_sendString(sub3_Decre);
+			delay(65000);
+			LCDNokia_gotoXY(25,2);
+			LCDNokia_sendString(conversion);
+			delay(65000);
+		}else if(B2 == getSystemStatus()->pressedButton){
+			float_String(getSystemStatus()->alarm.decrementMonitor);
+			LCDNokia_clear();
+			LCDNokia_gotoXY(10,1);
+			LCDNokia_sendString(sub3_Inc);
+			delay(65000);
+			LCDNokia_gotoXY(25,2);
+			LCDNokia_sendString(conversion);
+			delay(65000);
+		}else{
+			float_String(getSystemStatus()->alarm.decrementValue);
+			LCDNokia_clear();
+			LCDNokia_gotoXY(10,1);
+			LCDNokia_sendString(sub3_Decre);
+			delay(65000);
+			LCDNokia_gotoXY(25,2);
+			LCDNokia_sendString(conversion);
+			delay(65000);
+		}
+			LCDNokia_gotoXY(45,2);
+			LCDNokia_sendString(multi_perc);
+			delay(65000);
+			LCDNokia_gotoXY(0,3);
+			LCDNokia_sendString(multi_Change);
+			delay(65000);
 	break;
 	case MANUAL_STATE:
-		LCDNokia_clear();
-		LCDNokia_gotoXY(5,0);
-		LCDNokia_sendString(sub4_Ctrl);
-		delay(65000);
+			LCDNokia_clear();
+			LCDNokia_gotoXY(5,0);
+			LCDNokia_sendString(sub4_Ctrl);
+			delay(65000);
+			if((B4|B5) == getSystemStatus()->pressedButton)
+			{
+			float_String(getSystemStatus()->motor.velocityMonitor);
+			LCDNokia_gotoXY(30,1);
+			LCDNokia_sendString(conversion);
+			delay(65000);
+			}else{
+				float_String(getSystemStatus()->motor.velocityValue);
+				LCDNokia_gotoXY(30,1);
+				LCDNokia_sendString(conversion);
+				delay(65000);
+			}
 		LCDNokia_gotoXY(50,1);
 		LCDNokia_sendString(multi_perc);
 		delay(65000);
@@ -189,12 +248,16 @@ void Screen_Config(ProgrmaState state)
 		delay(65000);
 	break;
 	case FRECUENCY_STATE:
+		float_String(getSystemStatus()->frecuency);
 		LCDNokia_clear();
 		LCDNokia_gotoXY(10,1);
 		LCDNokia_sendString(sub5_Freq);
 		delay(65000);
 		LCDNokia_gotoXY(28,2);
 		LCDNokia_sendString(sub5_Hz);
+		delay(65000);
+		LCDNokia_gotoXY(20,3);
+		LCDNokia_sendString(conversion);
 		delay(65000);
 	break;
 	case ERROR_STATE:
