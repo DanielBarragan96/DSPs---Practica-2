@@ -11,7 +11,11 @@
 #include "DataTypeDefinitions.h"
 #include "MK64F12.h"
 
+//the system clock of the Kinetis
+#define SYSTEM_CLOCK 21000000
 
+//the delay to use with the PIT
+#define DELAY_PIT 2.0
 
 /*! This enumerated constant are used to select the PIT to be used*/
 typedef enum {PIT_0,PIT_1,PIT_2,PIT_3} PIT_Timer_t;
