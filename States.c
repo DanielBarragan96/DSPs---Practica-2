@@ -11,12 +11,13 @@
 #include "MK64F12.h"
 #include "Motor.h"
 #include "States.h"
+#include "Screen.h"
 
 static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
 		MAIN_STATE,
 		ERROR_STATE,
-		{OFF, 30, 30},
+		{OFF, 30, 30, 5, 5},
 		{25, CELSIUS, CELSIUS},
 		{ON, ON, 80, 80},
 		0	 //TODO check initial frequency
@@ -25,6 +26,8 @@ static SystemStatus systemState = {//variable where we store the system states
 void checkButtons(){
 	GPIO_clearIRQStatus(GPIO_C);
 	//if a button was pushed update the screen image.
+	updateSystemState();
+	Screen_Config(systemState.currentState);
 	systemState.pressedButton = NO_BUTTON;//Clean the pressed button.
 }
 
@@ -125,22 +128,22 @@ void updateSystemState(){
 		case CHANGE_STATE:{
 			switch(systemState.pressedButton){
 				case B0:{//return to initial menu and resets the monitor
-					systemState.motor.velocityMonitor = systemState.motor.velocityValue;
+					systemState.alarm.decrementMonitor= systemState.alarm.decrementValue;
 					systemState.currentState = MAIN_STATE;
 					return;
 				}
 				case B1:{//this decreases the motor velocity motor by 5%
-					systemState.motor.velocityMonitor -= 5;
-					if(VEL_LOW > systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 5;
+					systemState.alarm.decrementMonitor -= 5;
+					if(VEL_LOW > systemState.alarm.decrementMonitor) systemState.alarm.decrementMonitor = 5;
 					return;
 				}
 				case B2:{//this increases the motor velocity motor by 5%
-					systemState.motor.velocityMonitor += 5;
-					if(VEL_MAX < systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
+					systemState.alarm.decrementMonitor += 5;
+					if(VEL_MAX < systemState.alarm.decrementMonitor) systemState.alarm.decrementMonitor = 100;
 					return;
 				}
 				case B3:{//sets the new velocity of the motor
-					systemState.motor.velocityValue = systemState.motor.velocityMonitor;
+					systemState.alarm.decrementValue = systemState.alarm.decrementMonitor;
 					return;
 				}
 				case B4:
@@ -219,4 +222,7 @@ void setPressedButton(Buttons pressedBttn){
 }
 void changeAlarm(StatusTurn status){
 	systemState.alarm.alarmStatus = status;//update alarm state
+}
+void decreaseSpeed(){
+	systemState.motor.velocityValue -= systemState.alarm.decrementValue;//decreases motor speed
 }

@@ -37,6 +37,8 @@ typedef struct{
 	StatusTurn alarmStatus;//current value of the alarm
 	ufloat32 alarmaValue;//value at which the alarm should sound
 	ufloat32 alarmMonitor;//desired change of the value of alarmValue
+	ufloat32 decrementValue;
+	ufloat32 decrementMonitor;
 }Alarm;
 /*Type for the showed temperature*/
 typedef struct{
@@ -111,5 +113,13 @@ void setPressedButton(Buttons pressed);
  	 \return void
  */
 void changeAlarm(StatusTurn status);
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This function updates the velocity value when the temperature exceeds the limit.
+ 	 \return void
+ */
+void decreaseSpeed();
 
 #endif /* STATUS_H_ */

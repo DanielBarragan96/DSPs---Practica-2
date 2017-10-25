@@ -11,6 +11,21 @@
 #include "PIT.h"
 #include "MK64F12.h"
 #include "init.h"
+#include "LCDNokia5110.h"
+
+/** \brief This is the configuration structure to configure the LCD.
+ * Note that is constants and it is because is only a variable used for configuration*/
+const SPI_ConfigType SPI_Config = {
+		SPI_DISABLE_FIFO,
+		SPI_LOW_POLARITY,
+		SPI_LOW_PHASE,
+		SPI_MSB,
+		SPI_0,
+		SPI_MASTER,
+		GPIO_MUX2,
+		SPI_BAUD_RATE_2,
+		SPI_FSIZE_8,
+		{GPIO_D,BIT1,BIT2}};
 
 void initMain(){
 	/**Activating the clock gating of the GPIOs and the PIT*/
@@ -41,7 +56,7 @@ void initMain(){
 		//Alarm
 		GPIO_pinControlRegister(GPIO_C,BIT10,&pinControlRegisterMux1);
 		//LM35
-		//GPIO_pinControlRegister(GPIO_B,BIT2,&pinControlRegisterMux1);
+		GPIO_pinControlRegister(GPIO_B,BIT2,&pinControlRegisterMux1);
 
 		/**Assigns a safe value to the output pin21 of the GPIOB*/
 		GPIOB->PDOR |= 0x00200000;/**Blue led off*/
@@ -71,6 +86,11 @@ void initMain(){
 		NVIC_enableInterruptAndPriotity(PIT_CH0_IRQ, PRIORITY_3);
 		/**Enables and sets a particular interrupt and its priority*/
 		NVIC_enableInterruptAndPriotity(PORTC_IRQ,PRIORITY_4);
+
+		/*! Configuration function for the LCD port*/
+		SPI_init(&SPI_Config);
+		/*! Configuration function for the LCD */
+		LCDNokia_init();
 
 		EnableInterrupts;
 
