@@ -37,6 +37,7 @@ typedef struct{
 	StatusTurn alarmStatus;//current value of the alarm
 	ufloat32 alarmaValue;//value at which the alarm should sound
 	ufloat32 alarmMonitor;//desired change of the value of alarmValue
+	ufloat32 alarmMeasurement;
 	ufloat32 decrementValue;
 	ufloat32 decrementMonitor;
 }Alarm;

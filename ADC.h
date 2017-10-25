@@ -47,5 +47,6 @@ typedef enum{
 
 void ADC_init(ADC_CFG1_DLPC power, ADC_CFG1_ADIV div, ADC_CFG1_ADLSMP sample, ADC_CFG1_MODE mode, ADC_CFG1_ADICLK clk);
 uint16 ADC_Values();
+ufloat32 setMeasuredValue();
 
 #endif /* ADC_H_ */

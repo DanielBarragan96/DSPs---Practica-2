@@ -13,6 +13,8 @@
 #include "Screen.h"
 #include "GlobalFunctions.h"
 
+static uint8 conversion[6];
+
 void float_String(ufloat32 fl)
 {
 	uint16 entero = (int)fl;

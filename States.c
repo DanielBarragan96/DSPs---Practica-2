@@ -18,18 +18,17 @@
 static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
 		MAIN_STATE,
-		{OFF, 30, 30, 5, 5},
+		{OFF, 30, 30, 0, 5, 5},
 		{25, 77, CELSIUS, CELSIUS},
 		{ON, ON, 80, 80},
 		0	 //TODO check initial frequency
 };
 
 void initStates(){
-	systemState.alarm.alarmaValue = ADC_Values();//Measured by the ADC
-	systemState.alarm.alarmMonitor = systemState.alarm.alarmaValue;
-	systemState.motor.velocityValue = systemState.alarm.alarmaValue*(80/25);//Measured by the ADC
-	systemState.motor.velocityMonitor = systemState.motor.velocityValue;//also update the monitor variable
-	setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
+		systemState.alarm.alarmMeasurement = setMeasuredValue();//Measured by the ADC
+		systemState.motor.velocityValue = (5 + systemState.alarm.alarmMeasurement*(80/25));//Measured by the ADC
+		systemState.motor.velocityMonitor = systemState.motor.velocityValue;//also update the monitor variable
+		setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
 }
 
 void checkButtons(){

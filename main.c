@@ -22,7 +22,7 @@ int main(void) {
 
 	initMain();//configure the Kinetis
 	FlexTimer_Init();//configure the FlexTimer (motor)
-	//initStates();//initialize the temperature dependencies (velocity & current temperature)
+	initStates();//initialize the temperature dependencies (velocity & current temperature)
 
 	//updateScreen();//set initial image of the screen
 	Screen_Config(MAIN_STATE);

@@ -95,7 +95,7 @@ void initMain(){
 		/*! Configuration function for the LCD */
 		LCDNokia_init();
 		/*ADC initialize*/
-		ADC_init(LOW_POWER, CLOCK1,S_SHORT, ADC_16Bits, BUS_CLOCK);
+		ADC_init(LOW_POWER, CLOCK1, S_LONG, ADC_16Bits, BUS_CLOCK);
 
 		EnableInterrupts;
 
