@@ -20,13 +20,18 @@ static SystemStatus systemState = {//variable where we store the system states
 		MAIN_STATE,
 		{OFF, 30, 30, 0, 5, 5},
 		{25, 77, CELSIUS, CELSIUS},
-		{ON, ON, 80, 80},
+		{OFF, OFF, 80, 80},
 		0	 //TODO check initial frequency
 };
 
 void initStates(){
 		systemState.alarm.alarmMeasurement = setMeasuredValue();//Measured by the ADC
-		systemState.motor.velocityValue = (5 + systemState.alarm.alarmMeasurement*(80/25));//Measured by the ADC
+		ufloat32 castingToFive = (5 + systemState.alarm.alarmMeasurement*(80/25));
+		ufloat32 five = 5.0F;
+		while(0 != ((uint16)castingToFive % (uint16)five)){
+			castingToFive -=1;
+		}
+		systemState.motor.velocityValue = castingToFive;//Measured by the ADC
 		systemState.motor.velocityMonitor = systemState.motor.velocityValue;//also update the monitor variable
 		setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
 }
@@ -179,18 +184,20 @@ void updateSystemState(){
 							}
 							case B3:{//this updates the state of the motor using the monitor
 								systemState.motor.motorStatus = systemState.motor.motorStatusMonitor;
-								if(OFF != systemState.motor.motorStatus)//If the motor is ON
+								if(ON == systemState.motor.motorStatus)//If the motor is ON
 									systemState.motor.velocityValue = systemState.motor.velocityMonitor;//update the velocity
-								else
-									systemState.motor.velocityValue = 80;//set the default value for the motor velocity
 								return;
 							}
 							case B4:{//this decreases the motor velocity motor by 5%
+								if(!systemState.motor.motorStatusMonitor)
+									return;
 								systemState.motor.velocityMonitor -= 5;
 								if(VEL_LOW > systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 5;
 								return;
 							}
 							case B5:{//this increases the motor velocity motor by 5%
+								if(!systemState.motor.motorStatusMonitor)
+									return;
 								systemState.motor.velocityMonitor += 5;
 								if(VEL_MAX < systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
 								return;

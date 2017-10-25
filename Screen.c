@@ -44,7 +44,6 @@ void float_String_F(ufloat32 fl)
 	ufloat32 flotante = (fl-entero)*100;//multiplies by 100 the float decimal value
 	uint16 helper = (int)flotante;// makes cast to get get the integer part of the float decimals
 
-	/*uint values created to hold each character of the number*/
 	uint16 centenas = 0;
 	uint16 decenas = 0;
 	uint16 unidades = 0;
@@ -69,12 +68,12 @@ void float_String_F(ufloat32 fl)
 	centesimas+=48;
 
 	/*saves the value of the numbers on the conversion array*/
-	conversion[0] = centenas;
-	conversion[1] = decenas;
-	conversion[2] = unidades;
-	conversion[3] = '.';
-	conversion[4] = decimas;
-	conversion[5] = centesimas;
+	conversion_f[0] = centenas;
+	conversion_f[1] = decenas;
+	conversion_f[2] = unidades;
+	conversion_f[3] = '.';
+	conversion_f[4] = decimas;
+	conversion_f[5] = centesimas;
 }
 
 
@@ -196,7 +195,7 @@ void Screen_Config(ProgrmaState state)
 			LCDNokia_gotoXY(5,2);
 			LCDNokia_sendString(sub2_Temp);
 			delay(65000);
-			LCDNokia_gotoXY(40,2);
+			LCDNokia_gotoXY(45,2);
 			LCDNokia_sendString(conversion);
 			delay(65000);
 			LCDNokia_gotoXY(62,2);
@@ -208,21 +207,22 @@ void Screen_Config(ProgrmaState state)
 		}
 		else if(FAHRENHEIT == getSystemStatus()->temperature.typeDeegrees) // if the current system value is fahrenheit shows the current fahrenheit value and its sign
 		{
+
 			float_String_F(getSystemStatus()->temperature.fahrenheitValue); // converts the current fahrenheit value into a string
 			LCDNokia_clear();
 			LCDNokia_gotoXY(0,1);
 			LCDNokia_sendString(sub2_For_Temp);
 			delay(65000);
-			LCDNokia_gotoXY(5,2);
+			LCDNokia_gotoXY(20,2);
 			LCDNokia_sendString(sub2_Temp);
 			delay(65000);
-			LCDNokia_gotoXY(40,2);
-			LCDNokia_sendString(conversion);
+			LCDNokia_gotoXY(20,3);
+			LCDNokia_sendString(conversion_f);
 			delay(65000);
-			LCDNokia_gotoXY(62,2);
+			LCDNokia_gotoXY(62,3);
 			LCDNokia_sendString(sub2_Far);
 			delay(65000);
-			LCDNokia_gotoXY(0,3);
+			LCDNokia_gotoXY(0,4);
 			LCDNokia_sendString(sub2_Change);
 			delay(65000);
 		}
