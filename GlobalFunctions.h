@@ -8,14 +8,16 @@
 #ifndef GLOBALFUNCTIONS_H_
 #define GLOBALFUNCTIONS_H_
 
-void delay(uint16 delay)
-{
-	volatile uint16 counter;
+#include "DataTypeDefinitions.h"
 
-	for(counter=delay; counter > 0; counter--)
-	{
-	}
-}
-
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This function works as a delay according to the received value.
+ 	 \param[in]  delay value.
+ 	 \return void
+ */
+void delay(uint16 delay);
 
 #endif /* GLOBALFUNCTIONS_H_ */

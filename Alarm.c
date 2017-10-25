@@ -10,6 +10,7 @@
 #include "ADC.h"
 
 ufloat32 decreaseQuantitie = 0;
+uint8 measureLimiter = 0;
 
 void checkAlarm(){
 	Alarm actualAlarm = (getSystemStatus())->alarm;
@@ -38,6 +39,7 @@ void checkAlarm(){
 			}
 		}
 	}
+	getSystemStatus()->temperature.celsiusValue = measuredAlarm;
 }
 
 void resetDecreaseQuantitie(){	decreaseQuantitie = 0;	}

@@ -18,15 +18,15 @@
 static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
 		MAIN_STATE,
-		{OFF, 30, 30, 0, 5, 5},
+		{OFF, 30, 30, 5, 5},
 		{25, 77, CELSIUS, CELSIUS},
 		{OFF, OFF, 80, 80},
 		0	 //TODO check initial frequency
 };
 
 void initStates(){
-		systemState.alarm.alarmMeasurement = setMeasuredValue();//Measured by the ADC
-		ufloat32 castingToFive = (5 + systemState.alarm.alarmMeasurement*(80/25));
+		systemState.temperature.celsiusValue = setMeasuredValue();//Measured by the ADC
+		ufloat32 castingToFive = (5 + systemState.temperature.celsiusValue*(80/25));
 		ufloat32 five = 5.0F;
 		while(0 != ((uint16)castingToFive % (uint16)five)){
 			castingToFive -=1;
@@ -126,6 +126,7 @@ void updateSystemState(){
 				}
 				case B2:{//change the Monitor value, which will set the actual value if B3 is pressed
 					systemState.temperature.typeDeegreesMonitor = FAHRENHEIT;
+					systemState.temperature.fahrenheitValue = (1.8*systemState.temperature.fahrenheitValue)+32;
 					return;
 				}
 				case B3:{//change the actual temperature format, which will be used in the screen module
