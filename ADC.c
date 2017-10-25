@@ -43,7 +43,7 @@ uint16 ADC_Values()
 
 ufloat32 setMeasuredValue(){
 	ufloat32 adjustment = 10;
-	ufloat32 delayValue = 65000;
+	ufloat32 delayValue = 10000;//65000
 			uint16 a= (adjustment+(ADC_Values()*40/65535));
 			delay(delayValue);
 			uint16		b= (adjustment+(ADC_Values()*40/65535));

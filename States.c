@@ -26,6 +26,7 @@ static SystemStatus systemState = {//variable where we store the system states
 
 void initStates(){
 		systemState.temperature.celsiusValue = setMeasuredValue();//Measured by the ADC
+		systemState.temperature.fahrenheitValue = (systemState.temperature.celsiusValue*1.8)+32;
 		ufloat32 castingToFive = (5 + systemState.temperature.celsiusValue*(80/25));
 		ufloat32 five = 5.0F;
 		while(0 != ((uint16)castingToFive % (uint16)five)){
