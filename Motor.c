@@ -14,7 +14,7 @@
 #include "States.h"
 
 //physical actual value of the motor velocity
-static ufloat32 motorCycle;
+static ufloat32 motorCycle = 5;
 
 void checkMotor(){
 	//get current desired motor speed

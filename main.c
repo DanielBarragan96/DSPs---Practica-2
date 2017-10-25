@@ -35,7 +35,7 @@ int main(void) {
     	checkAlarm();//update the alarm status according to systemStatus.
 
     	//if the motor has the current motor speed do nothing
-    	if(getMotorCurrentValue() != getSystemStatus()->motor.velocityValue) checkMotor();//check motor and adjust to the desired value in systemStatus variable.
+    	if(getMotorCurrentValue() != getSystemStatus()->motor.velocityValue && NO_BUTTON == getSystemStatus()->pressedButton) checkMotor();//check motor and adjust to the desired value in systemStatus variable.
 
     	//ADC_Values();//check the LM35 temperature.
     }
