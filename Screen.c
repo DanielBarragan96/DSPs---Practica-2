@@ -13,9 +13,32 @@
 #include "Screen.h"
 #include "GlobalFunctions.h"
 
-static uint8 conversion[6];  // string value we're gonna inyect into the screen when transforming from float to string
+static uint8 conversion_f[6];  // string value we're gonna inyect into the screen when transforming from float to string
+static uint8 conversion[2];  // string value we're gonna inyect into the screen when transforming from float to string
 
 void float_String(ufloat32 fl)
+{
+	uint16 entero = (int)fl;	//makes cast to get the integer part of the float given
+
+	/*uint values created to hold each character of the number*/
+	uint16 decenas = 0;
+	uint16 unidades = 0;
+
+	/*while eliminating the biggest value of the whole number and the decimal part of the float it stores the value in the variables created*/
+	decenas = (uint16) entero/10;
+	entero = entero-(decenas*10);
+	unidades = entero;
+
+	/*ascii convertion of the numbers*/
+	decenas+=48;
+	unidades+=48;
+
+	/*saves the value of the numbers on the conversion array*/
+	conversion[0] = decenas;
+	conversion[1] = unidades;
+}
+
+void float_String_F(ufloat32 fl)
 {
 	uint16 entero = (int)fl;	//makes cast to get the integer part of the float given
 	ufloat32 flotante = (fl-entero)*100;//multiplies by 100 the float decimal value
@@ -53,6 +76,8 @@ void float_String(ufloat32 fl)
 	conversion[4] = decimas;
 	conversion[5] = centesimas;
 }
+
+
 
 void Screen_Config(ProgrmaState state)
 {
@@ -127,7 +152,7 @@ void Screen_Config(ProgrmaState state)
 		delay(65000);
 	break;
 	case ALARMA_STATE:
-		if((B2 | B1) == getSystemStatus()->pressedButton) // if either the b1 or the b2 were pressed shows the value the alarm is gonna be switched to instead of its current value
+		if((B2 == getSystemStatus()->pressedButton) || (B1 == getSystemStatus()->pressedButton)) // if either the b1 or the b2 were pressed shows the value the alarm is gonna be switched to instead of its current value
 		{
 	        LCDNokia_clear();
 			LCDNokia_gotoXY(20,1);
@@ -183,7 +208,7 @@ void Screen_Config(ProgrmaState state)
 		}
 		else if(FAHRENHEIT == getSystemStatus()->temperature.typeDeegrees) // if the current system value is fahrenheit shows the current fahrenheit value and its sign
 		{
-			float_String(getSystemStatus()->temperature.fahrenheitValue); // converts the current fahrenheit value into a string
+			float_String_F(getSystemStatus()->temperature.fahrenheitValue); // converts the current fahrenheit value into a string
 			LCDNokia_clear();
 			LCDNokia_gotoXY(0,1);
 			LCDNokia_sendString(sub2_For_Temp);
@@ -252,7 +277,7 @@ void Screen_Config(ProgrmaState state)
 		}
 	break;
 	case MANUAL_STATE:
-			if((B4|B5) == getSystemStatus()->pressedButton) // if either B4 or B5 we're pressed shows the value the motor is gonna be switched to
+			if((B4 == getSystemStatus()->pressedButton) || (B5 == getSystemStatus()->pressedButton)) // if either B4 or B5 we're pressed shows the value the motor is gonna be switched to
 			{
 				LCDNokia_clear();
 				LCDNokia_gotoXY(5,0);
