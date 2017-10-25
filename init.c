@@ -12,6 +12,7 @@
 #include "MK64F12.h"
 #include "init.h"
 #include "LCDNokia5110.h"
+#include "ADC.h"
 
 /** \brief This is the configuration structure to configure the LCD.
  * Note that is constants and it is because is only a variable used for configuration*/

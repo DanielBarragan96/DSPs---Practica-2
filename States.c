@@ -19,7 +19,7 @@ static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
 		MAIN_STATE,
 		{OFF, 30, 30, 5, 5},
-		{25, CELSIUS, CELSIUS},
+		{25, 77, CELSIUS, CELSIUS},
 		{ON, ON, 80, 80},
 		0	 //TODO check initial frequency
 };

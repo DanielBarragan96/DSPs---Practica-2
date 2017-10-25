@@ -28,10 +28,11 @@ void checkAlarm(){
 			GPIO_setPIN(GPIO_C, BIT10);
 			changeAlarm(ON);
 		}
-		ufloat32 decreaseQuantitie2 = (alarmLimit-measuredAlarm)/2;
+		ufloat32 decreaseQuantitie2 = (uint32) (measuredAlarm-alarmLimit)/2;
 		if(decreaseQuantitie2 > decreaseQuantitie){
-			decreaseQuantitie = decreaseQuantitie2 - decreaseQuantitie;
-			for(ufloat32 i = decreaseQuantitie; i >= 1 ; i--){
+			ufloat32 deltaQuantitie = decreaseQuantitie2 - decreaseQuantitie;
+			decreaseQuantitie += deltaQuantitie;
+			for(ufloat32 i = deltaQuantitie; i >= 1 ; i--){
 				decreaseSpeed();
 			}
 		}
