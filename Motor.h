@@ -36,14 +36,5 @@ void checkMotor();
  	 \return the value of the current velocity of the motor.
  */
 ufloat32 getMotorCurrentValue();
-/********************************************************************************************/
-/********************************************************************************************/
-/********************************************************************************************/
-/*!
- 	 \brief	This function modifies the motor status using the PWM.
- 	 \param[in] val is the new value of motorCurrent, which controls the PWM.
- 	 \return void
- */
-void setMotorCurrentValue(ufloat32 val);
 
 #endif
