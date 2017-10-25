@@ -16,6 +16,7 @@
 #include "Motor.h"
 #include "ADC.h"
 #include "Screen.h"
+#include "Motor.h"
 
 int main(void) {
 
@@ -31,7 +32,8 @@ int main(void) {
 
     	checkAlarm();//update the alarm status according to systemStatus.
 
-    	checkMotor();//check motor and adjust to the desired value in systemStatus variable.
+    	//if the motor has the current motor speed do nothing
+    	if(getMotorCurrentValue() != getSystemStatus()->motor.velocityValue) checkMotor();//check motor and adjust to the desired value in systemStatus variable.
 
     	//ADC_Values();//check the LM35 temperature.
     }

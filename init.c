@@ -51,8 +51,8 @@ void initMain(){
 		GPIO_pinControlRegister(GPIO_C,BIT7,&pinControlRegisterInputInterrupt);
 		GPIO_pinControlRegister(GPIO_C,BIT0,&pinControlRegisterInputInterrupt);
 		GPIO_pinControlRegister(GPIO_C,BIT9,&pinControlRegisterInputInterrupt);
-		GPIO_pinControlRegister(GPIO_C,BIT8,&pinControlRegisterInputInterrupt);
-		GPIO_pinControlRegister(GPIO_C,BIT1,&pinControlRegisterInputInterrupt);
+		GPIO_pinControlRegister(GPIO_C,BIT3,&pinControlRegisterInputInterrupt);
+		GPIO_pinControlRegister(GPIO_C,BIT2,&pinControlRegisterInputInterrupt);
 		//Alarm
 		GPIO_pinControlRegister(GPIO_C,BIT10,&pinControlRegisterMux1);
 		//LM35
@@ -73,8 +73,8 @@ void initMain(){
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT7);
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT0);
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT9);
-		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT8);
-		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT1);
+		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT3);
+		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT2);
 		//Alarm
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_OUTPUT,BIT10);
 		//LM35

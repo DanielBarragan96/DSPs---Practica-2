@@ -28,5 +28,13 @@ typedef enum{
  	 \return void
  */
 void checkMotor();
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This function returns the value of the motor.
+ 	 \return the value of the current velocity of the motor.
+ */
+ufloat32 getMotorCurrentValue();
 
 #endif

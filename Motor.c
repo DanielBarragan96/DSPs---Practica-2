@@ -20,9 +20,6 @@ void checkMotor(){
 	//get current desired motor speed
 	ufloat32 systemVel = (getSystemStatus())->motor.velocityValue;
 
-	//if the motor has the current motor speed do nothing
-	if(motorCycle == systemVel) return;
-
 	//increase the motor velocity using the PWM
 	if(motorCycle < systemVel){//if we need to increase the speed
 		motorCycle += 5;
@@ -36,4 +33,8 @@ void checkMotor(){
 	FlexTimer_updateCHValue(FTM0->MOD*motorCycle/100);
 
 	//TODO PIT for decelerate the motor
+}
+
+ufloat32 getMotorCurrentValue(){
+	return motorCycle;
 }

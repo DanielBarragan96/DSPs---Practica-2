@@ -57,7 +57,6 @@ typedef struct{
 typedef struct{
 	Buttons pressedButton;
 	ProgrmaState currentState;
-	ProgrmaState screenState;
 	Alarm alarm;
 	Temperature temperature;
 	Motor motor;
@@ -102,6 +101,7 @@ SystemStatus* getSystemStatus();
 /********************************************************************************************/
 /*!
  	 \brief	This function changes pressed button in the systemState variable.
+ 	 \param[in]  pressed indicates the pressed button captured in the interruption.
  	 \return void
  */
 void setPressedButton(Buttons pressed);
@@ -110,6 +110,7 @@ void setPressedButton(Buttons pressed);
 /********************************************************************************************/
 /*!
  	 \brief	This function updates the alarm state.
+ 	 \param[in]  status new alarm status value (ON/OFF).
  	 \return void
  */
 void changeAlarm(StatusTurn status);

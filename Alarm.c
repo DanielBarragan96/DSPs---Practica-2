@@ -8,18 +8,34 @@
 #include "GPIO.h"
 #include "States.h"
 
+ufloat32 decreaseQuantitie = 0;
+
 void checkAlarm(){
 	Alarm actualAlarm = (getSystemStatus())->alarm;
+	ufloat32 measuredAlarm = 0;
+	ufloat32 alarmLimit = getSystemStatus()->alarm.alarmaValue;
 	//Verify if the alarm has to turn off
 	//TODO Change to read the measurement of temperature
-	if(ON == actualAlarm.alarmStatus && 31 > actualAlarm.alarmaValue){//actualStatus.alarm.alarmaValue >= (actualStatus.alarm.alarmaValue -1)
-		GPIO_clearPIN(GPIO_C, BIT10);
-		changeAlarm(OFF);
+	if(alarmLimit > actualAlarm.alarmaValue){//actualStatus.alarm.alarmaValue >= (actualStatus.alarm.alarmaValue -1)
+		if(ON == actualAlarm.alarmStatus){
+			GPIO_clearPIN(GPIO_C, BIT10);
+			changeAlarm(OFF);
+		}
 	}
 	//TODO Change to read the measurement of temperature
-	else if(OFF == actualAlarm.alarmStatus && 31 <= actualAlarm.alarmaValue){
-		GPIO_setPIN(GPIO_C, BIT10);
-		changeAlarm(ON);
-		decreaseSpeed();
+	else if(alarmLimit <= actualAlarm.alarmaValue){
+		if(OFF == actualAlarm.alarmStatus){
+			GPIO_setPIN(GPIO_C, BIT10);
+			changeAlarm(ON);
+		}
+		ufloat32 decreaseQuantitie2 = (alarmLimit-measuredAlarm)/2;
+		if(decreaseQuantitie2 > decreaseQuantitie){
+			decreaseQuantitie = decreaseQuantitie2 - decreaseQuantitie;
+			for(ufloat32 i = decreaseQuantitie; i >= 1 ; i--){
+				decreaseSpeed();
+			}
+		}
 	}
 }
+
+void resetDecreaseQuantitie(){	decreaseQuantitie = 0;	}
