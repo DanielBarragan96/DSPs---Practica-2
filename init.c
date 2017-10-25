@@ -36,6 +36,9 @@ void initMain(){
 		GPIO_clockGating(GPIO_E);
 		PIT_clockGating();
 
+		//PWM output C1
+		PORTC->PCR[1]   = PORT_PCR_MUX(0x4);
+
 		/**Selected configurations*/
 		GPIO_pinControlRegisterType pinControlRegisterMux1 = GPIO_MUX1;
 		GPIO_pinControlRegisterType pinControlRegisterInputInterrupt = GPIO_MUX1|GPIO_PE|INTR_RISING_EDGE;

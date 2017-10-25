@@ -13,6 +13,8 @@
 #include "Screen.h"
 #include "GlobalFunctions.h"
 
+static uint8 conversion[6];
+
 void float_String(ufloat32 fl)
 {
 	uint16 entero = (int)fl;
@@ -145,16 +147,16 @@ void Screen_Config(ProgrmaState state)
 			LCDNokia_gotoXY(0,1);
 			LCDNokia_sendString(sub2_For_Temp);
 			delay(65000);
-			LCDNokia_gotoXY(5,2);
+			LCDNokia_gotoXY(15,2);
 			LCDNokia_sendString(sub2_Temp);
 			delay(65000);
-			LCDNokia_gotoXY(40,2);
+			LCDNokia_gotoXY(15,3);
 			LCDNokia_sendString(conversion);
 			delay(65000);
-			LCDNokia_gotoXY(62,2);
+			LCDNokia_gotoXY(62,3);
 			LCDNokia_sendString(sub2_Far);
 			delay(65000);
-			LCDNokia_gotoXY(0,3);
+			LCDNokia_gotoXY(0,4);
 			LCDNokia_sendString(sub2_Change);
 			delay(65000);
 		}

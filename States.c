@@ -13,6 +13,7 @@
 #include "States.h"
 #include "Screen.h"
 #include "Alarm.h"
+#include "ADC.h"
 
 static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
@@ -22,6 +23,14 @@ static SystemStatus systemState = {//variable where we store the system states
 		{ON, ON, 80, 80},
 		0	 //TODO check initial frequency
 };
+
+void initStates(){
+	systemState.alarm.alarmaValue = ADC_Values();//Measured by the ADC
+	systemState.alarm.alarmMonitor = systemState.alarm.alarmaValue;
+	systemState.motor.velocityValue = systemState.alarm.alarmaValue*(80/25);//Measured by the ADC
+	systemState.motor.velocityMonitor = systemState.motor.velocityValue;//also update the monitor variable
+	setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
+}
 
 void checkButtons(){
 	GPIO_clearIRQStatus(GPIO_C);
@@ -224,4 +233,5 @@ void changeAlarm(StatusTurn status){
 }
 void decreaseSpeed(){
 	systemState.motor.velocityValue -= systemState.alarm.decrementValue;//decreases motor speed
+	if(VEL_LOW > systemState.motor.velocityValue) systemState.motor.velocityValue = 5;//if the velocity is minor than the limit reset
 }

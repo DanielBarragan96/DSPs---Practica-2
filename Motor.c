@@ -14,7 +14,7 @@
 #include "States.h"
 
 //physical actual value of the motor velocity
-static ufloat32 motorCycle = 80;
+static ufloat32 motorCycle;
 
 void checkMotor(){
 	//get current desired motor speed
@@ -30,11 +30,14 @@ void checkMotor(){
 		if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;//check speed limit
 	}
 	//Update the flex timer value
-	FlexTimer_updateCHValue(FTM0->MOD*motorCycle/100);
+	FlexTimer_updateCHValue(250*motorCycle/100);
 
 	//TODO PIT for decelerate the motor
 }
 
 ufloat32 getMotorCurrentValue(){
 	return motorCycle;
+}
+void setMotorCurrentValue(ufloat32 val){
+		motorCycle = val;
 }
