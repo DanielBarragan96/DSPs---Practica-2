@@ -13,10 +13,42 @@
 #include "Screen.h"
 #include "GlobalFunctions.h"
 
+void float_String(ufloat32 fl)
+{
+	uint16 entero = (int)fl;
+	ufloat32 flotante = (fl-entero)*100;
+	uint16 helper = (int)flotante;
+	uint16 centenas = 0;
+	uint16 decenas = 0;
+	uint16 unidades = 0;
+	uint16 decimas = 0;
+	uint16 centesimas = 0;
+
+	centenas = (uint16) entero/100;
+	entero = entero-(centenas*100);
+	decenas = (uint16) entero/10;
+	entero = entero-(decenas*10);
+	unidades = entero;
+	decimas = (uint16) helper/10;
+	helper = helper-(decimas*10);
+	centesimas = helper;
+
+	centenas+=48;
+	decenas+=48;
+	unidades+=48;
+	decimas+=48;
+	centesimas+=48;
+
+	conversion[0] = centenas;
+	conversion[1] = decenas;
+	conversion[2] = unidades;
+	conversion[3] = '.';
+	conversion[4] = decimas;
+	conversion[5] = centesimas;
+}
+
 void Screen_Config(ProgrmaState state)
 {
-	uint8 string1[]="ITESO"; /*! String to be printed in the LCD*/
-	uint8 string2[]="uMs y DSPs"; /*! String to be printed in the LCD*/
 
 	uint8 multi_perc[] = "%";
 	uint8 multi_Cel[] = "'C";
@@ -90,19 +122,42 @@ void Screen_Config(ProgrmaState state)
 		delay(65000);
 	break;
 	case FORMAT_STATE:
-		LCDNokia_clear();
-		LCDNokia_gotoXY(0,1);
-		LCDNokia_sendString(sub2_For_Temp);
-		delay(65000);
-		LCDNokia_gotoXY(5,2);
-		LCDNokia_sendString(sub2_Temp);
-		delay(65000);
-		LCDNokia_gotoXY(62,2);
-		LCDNokia_sendString(multi_Cel);
-		delay(65000);
-		LCDNokia_gotoXY(0,3);
-		LCDNokia_sendString(sub2_Change);
-		delay(65000);
+		if(CELSIUS == getSystemStatus()->temperature.typeDeegrees)
+		{
+			LCDNokia_clear();
+			LCDNokia_gotoXY(0,1);
+			LCDNokia_sendString(sub2_For_Temp);
+			delay(65000);
+			LCDNokia_gotoXY(5,2);
+			LCDNokia_sendString(sub2_Temp);
+			delay(65000);
+			LCDNokia_gotoXY(62,2);
+			LCDNokia_sendString(multi_Cel);
+			delay(65000);
+			LCDNokia_gotoXY(0,3);
+			LCDNokia_sendString(sub2_Change);
+			delay(65000);
+		}
+		else if(FAHRENHEIT == getSystemStatus()->temperature.typeDeegrees)
+		{
+			float_String(138.52);
+			LCDNokia_clear();
+			LCDNokia_gotoXY(0,1);
+			LCDNokia_sendString(sub2_For_Temp);
+			delay(65000);
+			LCDNokia_gotoXY(5,2);
+			LCDNokia_sendString(sub2_Temp);
+			delay(65000);
+			LCDNokia_gotoXY(40,2);
+			LCDNokia_sendString(conversion);
+			delay(65000);
+			LCDNokia_gotoXY(62,2);
+			LCDNokia_sendString(sub2_Far);
+			delay(65000);
+			LCDNokia_gotoXY(0,3);
+			LCDNokia_sendString(sub2_Change);
+			delay(65000);
+		}
 	break;
 	case CHANGE_STATE:
 		LCDNokia_clear();
