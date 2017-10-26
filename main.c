@@ -21,10 +21,9 @@
 int main(void) {
 
 	initMain();//configure the Kinetis
-	FlexTimer_Init();//configure the FlexTimer (motor)
 	initStates();//initialize the temperature dependencies (velocity & current temperature)
 
-	Screen_Config(MAIN_STATE);//updateScreen();//set initial image of the screen
+	Screen_Config(MAIN_STATE);//set initial image of the screen
 	checkMotor();//Initialize the PWM for the motor
 
     while(1) {//the systemStatus variable is located in States.c, and stores the system information.
@@ -35,6 +34,7 @@ int main(void) {
 
     	//if the motor has the current motor speed do nothing
     	if(getMotorCurrentValue() != getSystemStatus()->motor.velocityValue && NO_BUTTON == getSystemStatus()->pressedButton) checkMotor();//check motor and adjust to the desired value in systemStatus variable.
+
     }
     return 0 ;
 }
