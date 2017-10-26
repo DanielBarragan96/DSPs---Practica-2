@@ -15,6 +15,10 @@
 
 //  mod = #grande; chie
 
+static BooleanType CNSC_FLAG = FALSE;
+static uint16 CNSC_VAL = 0;
+static BooleanType OF_FLAG = FALSE;
+
 void FTM0_ISR()
 {
 	FTM0->SC &= ~FLEX_TIMER_TOF;
@@ -39,9 +43,13 @@ void FTM2_IRQHandler()
 	if(FTM_SC_TOF_MASK == (FTM2->SC & FTM_SC_TOF_MASK))
 	{
 		FTM2->SC &= ~(FTM_SC_TOF_MASK);
-	}else if(FTM_STATUS_CH0F_MASK == (FTM2->SC & FTM_STATUS_CH0F_MASK)){
+		OF_FLAG = TRUE;
+	}
+	if(FTM2->STATUS & FTM_STATUS_CH0F_MASK)
+    {
 		FTM2->SC &= ~(FTM_STATUS_CH0F_MASK);
-
+		CNSC_FLAG = TRUE;
+		CNSC_VAL = FTM2->CONTROLS[0].CnV;
 	}
 }
 
@@ -57,21 +65,23 @@ void FlexTimer2_Init()
 {
 	/** Clock gating for the FlexTimer 0*/
 		SIM->SCGC6 |= FLEX_TIMER_2_CLOCK_GATING;
+		SIM->SCGC3 |= SIM_SCGC3_FTM2_MASK;
 		/**When write protection is enabled (WPDIS = 0), write protected bits cannot be written.
 		* When write protection is disabled (WPDIS = 1), write protected bits can be written.*/
 		FTM2->MODE |= FLEX_TIMER_WPDIS |FTM_MODE_FAULTM_MASK| FTM_MODE_FTMEN_MASK;
 		FTM2->SC = 0x00;
 		/**Configure the times*/
-		FTM2->SC = FLEX_TIMER_TOIE | FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
+		FTM2->SC |
+		FLEX_TIMER_TOIE | FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
 		FTM2->CNTIN = 0;
 		FTM2->CNT = 0;
 		FTM2->CONF |= FTM_CONF_BDMMODE(3);
 		/**Selects the Edge-Aligned PWM mode mode*/
-		FTM2->CONTROLS[0].CnSC = FLEX_TIMER_ELSA | FLEX_TIMER_CHIE;
+		FTM2->CONTROLS[0].CnSC |= FLEX_TIMER_ELSA | FLEX_TIMER_CHIE;
 		FTM2->COMBINE = 0x00;
 		/**Assigning a default value for modulo register*/
 		FTM2->MOD = 0x00FF;
-		NVIC_enableInterruptAndPriotity(FTM2_IRQ, 5);
+		NVIC_enableInterruptAndPriotity(FTM2_IRQ, 2);
 }
 
 void FlexTimer_Init()
