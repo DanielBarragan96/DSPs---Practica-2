@@ -34,11 +34,11 @@ void PORTC_IRQHandler(){
 		setPressedButton(B3);
 		return;
 	}
-	else if(TRUE == GPIO_readPIN(GPIO_C, BIT3)){
+	else if(TRUE == GPIO_readPIN(GPIO_C, BIT8)){
 		setPressedButton(B4);
 		return;
 	}
-	else if(TRUE == GPIO_readPIN(GPIO_C, BIT2)){
+	else if(TRUE == GPIO_readPIN(GPIO_C, BIT1)){
 		setPressedButton(B5);
 		return;
 	}

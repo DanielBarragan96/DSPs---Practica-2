@@ -65,5 +65,4 @@ typedef long int sint32;
 typedef float ufloat32;
 
 
-
 #endif /* DATATYPEDEFINITIONS_H_ */
