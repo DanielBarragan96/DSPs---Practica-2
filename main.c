@@ -53,11 +53,10 @@ int main(void) {
 	FlexTimer_Init();
 	FlexTimer2_Init();
 	initStates();//initialize the temperature dependencies (velocity & current temperature)
-	EnableInterrupts;
 
 	Screen_Config(MAIN_STATE);//set initial image of the screen
 	checkMotor();//Initialize the PWM for the motor
-
+	EnableInterrupts;
 
     while(1) {//the systemStatus variable is located in States.c, and stores the system information.
 

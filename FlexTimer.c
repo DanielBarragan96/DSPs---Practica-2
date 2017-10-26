@@ -12,12 +12,14 @@
 #include "FlexTimer.h"
 #include "MK64F12.h"
 #include "NVIC.h"
+#include "GPIO.h"
 
 //  mod = #grande; chie
 
 static BooleanType CNSC_FLAG = FALSE;
 static uint16 CNSC_VAL = 0;
 static BooleanType OF_FLAG = FALSE;
+static uint32 OF_VAL = 0;
 
 void FTM0_ISR()
 {
@@ -40,17 +42,30 @@ void FTM2_ISR()
 
 void FTM2_IRQHandler()
 {
-	if(FTM_SC_TOF_MASK == (FTM2->SC & FTM_SC_TOF_MASK))
+	if(FTM2->SC & FTM_SC_TOF_MASK)
 	{
+		if(TRUE == CNSC_FLAG)
+		{
+			OF_FLAG++;
+		}
 		FTM2->SC &= ~(FTM_SC_TOF_MASK);
-		OF_FLAG = TRUE;
 	}
-	if(FTM2->STATUS & FTM_STATUS_CH0F_MASK)
+
+	if(FTM2->CONTROLS[0].CnSC & FTM_CnSC_CHF_MASK)
     {
-		FTM2->SC &= ~(FTM_STATUS_CH0F_MASK);
+
 		CNSC_FLAG = TRUE;
 		CNSC_VAL = FTM2->CONTROLS[0].CnV;
 	}
+	if(FTM2->SC | FTM_SC_TOF_MASK)
+	{
+		if(FTM2->STATUS & FTM_STATUS_CH0F_MASK)
+		{
+			FTM2->STATUS &= ~(FTM_STATUS_CH0F_MASK);
+		}
+	}
+	FTM2->CONTROLS[0].CnSC &= ~(FTM_CnSC_CHF_MASK);
+
 }
 
 void FlexTimer2_updateCHValue(sint16 channelValue)
@@ -63,6 +78,7 @@ void FlexTimer2_updateCHValue(sint16 channelValue)
 
 void FlexTimer2_Init()
 {
+		GPIO_clockGating(GPIO_B);
 	/** Clock gating for the FlexTimer 0*/
 		SIM->SCGC6 |= FLEX_TIMER_2_CLOCK_GATING;
 		SIM->SCGC3 |= SIM_SCGC3_FTM2_MASK;
@@ -71,8 +87,7 @@ void FlexTimer2_Init()
 		FTM2->MODE |= FLEX_TIMER_WPDIS |FTM_MODE_FAULTM_MASK| FTM_MODE_FTMEN_MASK;
 		FTM2->SC = 0x00;
 		/**Configure the times*/
-		FTM2->SC |
-		FLEX_TIMER_TOIE | FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
+		FTM2->SC |= FLEX_TIMER_TOIE | FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
 		FTM2->CNTIN = 0;
 		FTM2->CNT = 0;
 		FTM2->CONF |= FTM_CONF_BDMMODE(3);
@@ -81,7 +96,7 @@ void FlexTimer2_Init()
 		FTM2->COMBINE = 0x00;
 		/**Assigning a default value for modulo register*/
 		FTM2->MOD = 0x00FF;
-		NVIC_enableInterruptAndPriotity(FTM2_IRQ, 2);
+		NVIC_enableInterruptAndPriotity(FTM2_IRQ, PRIORITY_4);
 }
 
 void FlexTimer_Init()
