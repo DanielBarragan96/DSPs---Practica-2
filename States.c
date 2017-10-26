@@ -26,13 +26,13 @@ static SystemStatus systemState = {//variable where we store the system states
 
 void initStates(){
 		systemState.temperature.celsiusValue = setMeasuredValue();//Measured by the ADC
-		systemState.temperature.fahrenheitValue = (systemState.temperature.celsiusValue*1.8)+32;
-		ufloat32 castingToFive = (5 + systemState.temperature.celsiusValue*(80/25));
+		systemState.temperature.fahrenheitValue = (systemState.temperature.celsiusValue*1.8)+32;//calculate the Fahrenheit value
+		ufloat32 castingToFive = (5 + systemState.temperature.celsiusValue*(80/25));//calculate the velocity with initial condition: with 25°C Velocity = 80
 		ufloat32 five = 5.0F;
-		while(0 != ((uint16)castingToFive % (uint16)five)){
-			castingToFive -=1;
+		while(0 != ((uint16)castingToFive % (uint16)five)){//check if the velocity is a multiple of 5, or decrease its value until it is.
+			castingToFive -=1;//decrease the velocity
 		}
-		systemState.motor.velocityValue = castingToFive;//Measured by the ADC
+		systemState.motor.velocityValue = castingToFive;//Calculated with the temperature and a multiple of five
 		systemState.motor.velocityMonitor = systemState.motor.velocityValue;//also update the monitor variable
 		//setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
 }

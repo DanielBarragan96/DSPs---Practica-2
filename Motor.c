@@ -29,16 +29,13 @@ void checkMotor(){
 		motorCycle -= 5;
 		if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;//check speed limit
 	}
-	//Update the flex timer value
-	FlexTimer_updateCHValue(250*motorCycle/100);
-
-	//TODO PIT for decelerate the motor
+	FlexTimer_updateCHValue(250*motorCycle/100);//Update the flex timer value
 }
 
 ufloat32 getMotorCurrentValue(){
-	return motorCycle;
+	return motorCycle;//get the PWM value
 }
 
 void setMotorCurrentValue(ufloat32 val){
-		motorCycle = val;
+		motorCycle = val;//set initial PWM value
 }
