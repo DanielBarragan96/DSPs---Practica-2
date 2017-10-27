@@ -19,14 +19,15 @@
 static BooleanType CNSC_FLAG = FALSE;
 static uint16 CNSC_VAL = 0;
 static BooleanType OF_FLAG = FALSE;
-static uint32 OF_VAL = 0;
+static uint16 OF_VAL = 0;
+static ufloat32 periodo = 0;
+static ufloat32 frecuencia = 0;
 
 void FTM0_ISR()
 {
 	FTM0->SC &= ~FLEX_TIMER_TOF;
 	GPIOD->PDOR ^= 0xFF;
 }
-
 
 void FlexTimer_updateCHValue(sint16 channelValue)
 {
@@ -42,6 +43,7 @@ void FTM2_ISR()
 
 void FTM2_IRQHandler()
 {
+	//if we overflow with mod
 	if(FTM2->SC & FTM_SC_TOF_MASK)
 	{
 		if(TRUE == CNSC_FLAG)
@@ -50,19 +52,12 @@ void FTM2_IRQHandler()
 		}
 		FTM2->SC &= ~(FTM_SC_TOF_MASK);
 	}
-
+	//if we have an edge on the signal
 	if(FTM2->CONTROLS[0].CnSC & FTM_CnSC_CHF_MASK)
     {
 
 		CNSC_FLAG = TRUE;
 		CNSC_VAL = FTM2->CONTROLS[0].CnV;
-	}
-	if(FTM2->SC | FTM_SC_TOF_MASK)
-	{
-		if(FTM2->STATUS & FTM_STATUS_CH0F_MASK)
-		{
-			FTM2->STATUS &= ~(FTM_STATUS_CH0F_MASK);
-		}
 	}
 	FTM2->CONTROLS[0].CnSC &= ~(FTM_CnSC_CHF_MASK);
 
@@ -78,7 +73,7 @@ void FlexTimer2_updateCHValue(sint16 channelValue)
 
 void FlexTimer2_Init()
 {
-		GPIO_clockGating(GPIO_B);
+		//GPIO_clockGating(GPIO_B);
 	/** Clock gating for the FlexTimer 0*/
 		SIM->SCGC6 |= FLEX_TIMER_2_CLOCK_GATING;
 		SIM->SCGC3 |= SIM_SCGC3_FTM2_MASK;
@@ -113,7 +108,7 @@ void FlexTimer_Init()
 		/**Selects the Edge-Aligned PWM mode mode*/
 		FTM0->CONTROLS[0].CnSC = FLEX_TIMER_MSB | FLEX_TIMER_ELSB;
 		/**Assign a duty cycle of 50%*/
-		FTM0->CONTROLS[0].CnV = (0);//initial value at zero, wait for changes in the velocity of the motor
+		FTM0->CONTROLS[0].CnV = (0X00FF);//initial value at zero, wait for changes in the velocity of the motor
 		/**Configure the times*/
 		FTM0->SC = FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
 }
