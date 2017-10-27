@@ -56,7 +56,6 @@ int main(void) {
 
 	Screen_Config(MAIN_STATE);//set initial image of the screen
 	checkMotor();//Initialize the PWM for the motor
-	EnableInterrupts;
 
     while(1) {//the systemStatus variable is located in States.c, and stores the system information.
 

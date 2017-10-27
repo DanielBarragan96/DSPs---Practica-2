@@ -25,7 +25,7 @@ const SPI_ConfigType SPI_Config = {
 		SPI_0,
 		SPI_MASTER,
 		GPIO_MUX2,
-		SPI_BAUD_RATE_2,
+		SPI_BAUD_RATE_6,	//Switched the baudrate to triple the rate to be able to show the screen with augmented speed
 		SPI_FSIZE_8,
 		{GPIO_D,BIT1,BIT2}};
 
@@ -41,7 +41,7 @@ void initMain(){
 
 		/**configures both ptc1 and ptb18 in alt modes 3,4 respectively*/
 		PORTC->PCR[1]   = PORT_PCR_MUX(0x4);
-		//PORTB->PCR[18]   = PORT_PCR_MUX(0x3);
+		PORTB->PCR[18]   = PORT_PCR_MUX(0x3);
 		/**Selected configurations*/
 		GPIO_pinControlRegisterType pinControlRegisterMux1 = GPIO_MUX1;
 		GPIO_pinControlRegisterType pinControlRegisterInputInterrupt = GPIO_MUX1|GPIO_PE|INTR_RISING_EDGE;
@@ -88,8 +88,10 @@ void initMain(){
 		/*! Configuration function for the LCD */
 		LCDNokia_init();
 		/*ADC initialize*/
-		ADC_init(LOW_POWER, CLOCK1, S_LONG, ADC_16Bits, BUS_CLOCK);
+		ADC_init();
 
+		PIT_clear(PIT_0);
+		PIT_delay(PIT_0, SYSTEM_CLOCK, 0.2);// delay until next function value
 }
 
 void initDAC(){

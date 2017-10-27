@@ -17,19 +17,23 @@
 static ufloat32 motorCycle = 5;
 
 void checkMotor(){
-	//get current desired motor speed
-	ufloat32 systemVel = (getSystemStatus())->motor.velocityValue;
+	if(TRUE == PIT_getIntrStutus(PIT_0)){
+		//get current desired motor speed
+		ufloat32 systemVel = (getSystemStatus())->motor.velocityValue;
 
-	//increase the motor velocity using the PWM
-	if(motorCycle < systemVel){//if we need to increase the speed
-		motorCycle += 5;
-		if(MOTOR_MAX_VEL < motorCycle)	motorCycle = 100;//check speed limit
+		//increase the motor velocity using the PWM
+		if(motorCycle < systemVel){//if we need to increase the speed
+			motorCycle += 5;
+			if(MOTOR_MAX_VEL < motorCycle)	motorCycle = 100;//check speed limit
+		}
+		else if(motorCycle > systemVel){//if we need to decrease the speed
+			motorCycle -= 5;
+			if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;//check speed limit
+		}
+		FlexTimer_updateCHValue(250*motorCycle/100);//Update the flex timer value
+		PIT_clear(PIT_0);
+		PIT_delay(PIT_0, SYSTEM_CLOCK, 3.0);// delay until next function value
 	}
-	else if(motorCycle > systemVel){//if we need to decrease the speed
-		motorCycle -= 5;
-		if(MOTOR_MIN_VEL > motorCycle)	motorCycle = 5;//check speed limit
-	}
-	FlexTimer_updateCHValue(250*motorCycle/100);//Update the flex timer value
 }
 
 ufloat32 getMotorCurrentValue(){

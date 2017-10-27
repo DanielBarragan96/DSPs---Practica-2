@@ -15,7 +15,7 @@ uint8 measureLimiter = 0;
 void checkAlarm(){
 	//current values of alarm
 	Alarm actualAlarm = (getSystemStatus())->alarm;
-	ufloat32 measuredAlarm = setMeasuredValue();
+	ufloat32 measuredAlarm = convertRead();
 	ufloat32 alarmLimit = getSystemStatus()->alarm.alarmaValue;
 	//Verify if the alarm has to turn off
 	if(alarmLimit > measuredAlarm){//actualStatus.alarm.alarmaValue >= (actualStatus.alarm.alarmaValue -1)
