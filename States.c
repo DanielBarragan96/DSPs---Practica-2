@@ -25,7 +25,9 @@ static SystemStatus systemState = {//variable where we store the system states
 };
 
 void initStates(){
+	while(1){
 		systemState.temperature.celsiusValue = setMeasuredValue();//Measured by the ADC
+	}
 		systemState.temperature.fahrenheitValue = (systemState.temperature.celsiusValue*1.8)+32;//calculate the Fahrenheit value
 		ufloat32 castingToFive = (5 + systemState.temperature.celsiusValue*(80/25));//calculate the velocity with initial condition: with 25°C Velocity = 80
 		ufloat32 five = 5.0F;
