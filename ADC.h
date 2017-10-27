@@ -45,6 +45,7 @@ typedef enum{
 	AT_CLOCK,
 	AS_CLOCK
 }ADC_CFG1_ADICLK;
+
 /********************************************************************************************/
 /********************************************************************************************/
 /********************************************************************************************/
@@ -57,7 +58,7 @@ typedef enum{
  	 \param[in]  clk selects which clk will be used
  	 \return void
  */
-void ADC_init(ADC_CFG1_DLPC power, ADC_CFG1_ADIV div, ADC_CFG1_ADLSMP sample, ADC_CFG1_MODE mode, ADC_CFG1_ADICLK clk);
+void ADC_init();
 /********************************************************************************************/
 /********************************************************************************************/
 /********************************************************************************************/
@@ -66,7 +67,13 @@ void ADC_init(ADC_CFG1_DLPC power, ADC_CFG1_ADIV div, ADC_CFG1_ADLSMP sample, AD
  	 \return the values the adc read.
  */
 uint16 ADC_Values();
-ufloat32 setMeasuredValue();
-ufloat32 convertRead();
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	 This function converts values the adc read and converts them into degrees.
+ 	 \return the values the adc read.
+ */
+uint16 convertRead();
 
 #endif /* ADC_H_ */
