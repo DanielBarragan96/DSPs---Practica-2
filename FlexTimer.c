@@ -16,11 +16,14 @@
 
 //  mod = #grande; chie
 
-static BooleanType CNSC_FLAG = FALSE;
-static uint16 CNSC_VAL = 0;
-static BooleanType OF_FLAG = FALSE;
-static uint16 OF_VAL = 0;
-static ufloat32 periodo = 0;
+//static BooleanType CNSC_FLAG = FALSE;
+static uint16 CNV_old = 0;
+static uint16 CNV_new = 0;
+static BooleanType Rise_flag = FALSE;
+static uint16 MOD_count = 0;
+static uint16 MOD_new = 0;
+static uint16 MOD_old = 0;
+//static ufloat32 periodo = 0;
 static ufloat32 frecuencia = 0;
 
 void FTM0_ISR()
@@ -46,21 +49,32 @@ void FTM2_IRQHandler()
 	//if we overflow with mod
 	if(FTM2->SC & FTM_SC_TOF_MASK)
 	{
-		if(TRUE == CNSC_FLAG)
-		{
-			OF_FLAG++;
-		}
+		MOD_count++;
 		FTM2->SC &= ~(FTM_SC_TOF_MASK);
 	}
 	//if we have an edge on the signal
 	if(FTM2->CONTROLS[0].CnSC & FTM_CnSC_CHF_MASK)
     {
-
-		CNSC_FLAG = TRUE;
-		CNSC_VAL = FTM2->CONTROLS[0].CnV;
+		if(FALSE == Rise_flag)
+		{
+			MOD_old = MOD_count;
+			CNV_old = FTM2->CONTROLS[0].CnV;
+			Rise_flag = TRUE;
+		}else if(TRUE == Rise_flag){
+			MOD_new = MOD_count;
+			CNV_new = FTM2->CONTROLS[0].CnV;
+			Rise_flag = FALSE;
+			Frequency_Calc();
+		}
+		FTM2->CONTROLS[0].CnSC &= ~(FTM_CnSC_CHF_MASK);
 	}
-	FTM2->CONTROLS[0].CnSC &= ~(FTM_CnSC_CHF_MASK);
+}
 
+void Frequency_Calc()
+{
+	uint16 Ts_difference = 0;
+	Ts_difference = ((MOD_new)*(FTM2->MOD)+CNV_new)-((MOD_old)*(FTM2->MOD)+CNV_old);
+	frecuencia = FREQUENCY_CLOCK/Ts_difference;
 }
 
 void FlexTimer2_updateCHValue(sint16 channelValue)
@@ -79,7 +93,9 @@ void FlexTimer2_Init()
 		SIM->SCGC3 |= SIM_SCGC3_FTM2_MASK;
 		/**When write protection is enabled (WPDIS = 0), write protected bits cannot be written.
 		* When write protection is disabled (WPDIS = 1), write protected bits can be written.*/
-		FTM2->MODE |= FLEX_TIMER_WPDIS |FTM_MODE_FAULTM_MASK| FTM_MODE_FTMEN_MASK;
+		FTM2->MODE |= FLEX_TIMER_WPDIS |FTM_MODE_FAULTM_MASK;//| FTM_MODE_FTMEN_MASK;
+		/**Enables the writing over all registers*/
+		FTM0->MODE &= ~FLEX_TIMER_FTMEN;
 		FTM2->SC = 0x00;
 		/**Configure the times*/
 		FTM2->SC |= FLEX_TIMER_TOIE | FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;

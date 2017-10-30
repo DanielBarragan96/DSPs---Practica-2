@@ -18,6 +18,7 @@
 
 #define FLEX_TIMER_0_CLOCK_GATING 0x01000000
 #define FLEX_TIMER_2_CLOCK_GATING 0x04000000
+#define FREQUENCY_CLOCK 60000000
 
 #define FLEX_TIMER_FAULTIE  0x80
 #define FLEX_TIMER_FAULTM_0   0x00
@@ -69,6 +70,7 @@
 void FlexTimer2_Init();
 void FTM2_ISR();
 void FlexTimer_updateCHValue(sint16 channelValue);
+void Frequency_Calc();
 
 void FlexTimer_Init();
 
