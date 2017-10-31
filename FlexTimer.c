@@ -13,6 +13,7 @@
 #include "MK64F12.h"
 #include "NVIC.h"
 #include "GPIO.h"
+#include "PIT.h"
 
 //  mod = #grande; chie
 
@@ -25,6 +26,11 @@ static uint16 MOD_new = 0;
 static uint16 MOD_old = 0;
 //static ufloat32 periodo = 0;
 static ufloat32 frecuencia = 0;
+
+ufloat32 GetFreq()
+{
+	return frecuencia;
+}
 
 void FTM0_ISR()
 {
@@ -72,9 +78,9 @@ void FTM2_IRQHandler()
 
 void Frequency_Calc()
 {
-	uint16 Ts_difference = 0;
+	ufloat32 Ts_difference = 0;
 	Ts_difference = ((MOD_new)*(FTM2->MOD)+CNV_new)-((MOD_old)*(FTM2->MOD)+CNV_old);
-	frecuencia = FREQUENCY_CLOCK/Ts_difference;
+	frecuencia = (SYSTEM_CLOCK/2)/(Ts_difference*22.5);
 }
 
 void FlexTimer2_updateCHValue(sint16 channelValue)
@@ -93,9 +99,9 @@ void FlexTimer2_Init()
 		SIM->SCGC3 |= SIM_SCGC3_FTM2_MASK;
 		/**When write protection is enabled (WPDIS = 0), write protected bits cannot be written.
 		* When write protection is disabled (WPDIS = 1), write protected bits can be written.*/
-		FTM2->MODE |= FLEX_TIMER_WPDIS |FTM_MODE_FAULTM_MASK;//| FTM_MODE_FTMEN_MASK;
+		FTM2->MODE |= FLEX_TIMER_WPDIS |FTM_MODE_FAULTM_MASK;
 		/**Enables the writing over all registers*/
-		FTM0->MODE &= ~FLEX_TIMER_FTMEN;
+		FTM2->MODE &= ~FLEX_TIMER_FTMEN;
 		FTM2->SC = 0x00;
 		/**Configure the times*/
 		FTM2->SC |= FLEX_TIMER_TOIE | FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
@@ -106,7 +112,7 @@ void FlexTimer2_Init()
 		FTM2->CONTROLS[0].CnSC |= FLEX_TIMER_ELSA | FLEX_TIMER_CHIE;
 		FTM2->COMBINE = 0x00;
 		/**Assigning a default value for modulo register*/
-		FTM2->MOD = 0x00FF;
+		FTM2->MOD = 0xFFFF;
 		NVIC_enableInterruptAndPriotity(FTM2_IRQ, PRIORITY_4);
 }
 

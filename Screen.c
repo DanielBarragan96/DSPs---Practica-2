@@ -381,8 +381,8 @@ void Screen_Config(ProgrmaState state)
 			}
 	break;
 	case FRECUENCY_STATE:
-		float_String(getSystemStatus()->frecuency); // converts the frequency value into a string
 		LCDNokia_clear();
+		float_String(getSystemStatus()->frecuency); // converts the frequency value into a string
 		LCDNokia_gotoXY(10,1);
 		LCDNokia_sendString(sub5_Freq);
 		delay(65000);

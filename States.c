@@ -14,6 +14,7 @@
 #include "Screen.h"
 #include "Alarm.h"
 #include "ADC.h"
+#include "FlexTimer.h"
 
 static SystemStatus systemState = {//variable where we store the system states
 		NO_BUTTON,
@@ -34,6 +35,7 @@ void initStates(){
 		}
 		systemState.motor.velocityValue = castingToFive;//Calculated with the temperature and a multiple of five
 		systemState.motor.velocityMonitor = systemState.motor.velocityValue;//also update the monitor variable
+		systemState.frecuency = GetFreq();
 		//setMotorCurrentValue(systemState.motor.velocityValue);// update PWM value
 }
 

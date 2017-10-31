@@ -66,7 +66,7 @@
 #define  FLEX_TIMER_CHIE  0x40
 #define  FLEX_TIMER_CHF   0x80
 
-
+ufloat32 GetFreq();
 void FlexTimer2_Init();
 void FTM2_ISR();
 void FlexTimer_updateCHValue(sint16 channelValue);
