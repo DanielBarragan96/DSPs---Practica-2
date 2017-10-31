@@ -37,7 +37,6 @@ typedef struct{
 	StatusTurn alarmStatus;//current value of the alarm
 	ufloat32 alarmaValue;//value at which the alarm should sound
 	ufloat32 alarmMonitor;//desired change of the value of alarmValue
-	ufloat32 alarmMeasurement;
 	ufloat32 decrementValue;
 	ufloat32 decrementMonitor;
 }Alarm;
@@ -133,5 +132,14 @@ void changeAlarm(StatusTurn status);
  	 \return void
  */
 void decreaseSpeed();
+/********************************************************************************************/
+/********************************************************************************************/
+/********************************************************************************************/
+/*!
+ 	 \brief	This function updates the frequency value.
+ 	 \param[in]  status new frequency value..
+ 	 \return void
+ */
+void setFrequency(ufloat32 newFrequency);
 
 #endif /* STATUS_H_ */

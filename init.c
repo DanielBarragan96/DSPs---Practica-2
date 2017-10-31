@@ -14,6 +14,7 @@
 #include "LCDNokia5110.h"
 #include "ADC.h"
 
+
 /** \brief This is the configuration structure to configure the LCD.
  * Note that is constants and it is because is only a variable used for configuration*/
 const SPI_ConfigType SPI_Config = {
@@ -24,11 +25,12 @@ const SPI_ConfigType SPI_Config = {
 		SPI_0,
 		SPI_MASTER,
 		GPIO_MUX2,
-		SPI_BAUD_RATE_2,
+		SPI_BAUD_RATE_6,	//Switched the baudrate to triple the rate to be able to show the screen with augmented speed
 		SPI_FSIZE_8,
 		{GPIO_D,BIT1,BIT2}};
 
 void initMain(){
+
 	/**Activating the clock gating of the GPIOs and the PIT*/
 		GPIO_clockGating(GPIO_A);
 		GPIO_clockGating(GPIO_B);
@@ -37,18 +39,15 @@ void initMain(){
 		GPIO_clockGating(GPIO_E);
 		PIT_clockGating();
 
-		//PWM output C1
+		/**configures both ptc1 and ptb18 in alt modes 3,4 respectively*/
 		PORTC->PCR[1]   = PORT_PCR_MUX(0x4);
+		PORTB->PCR[18]   = PORT_PCR_MUX(0x3);
 		/**Selected configurations*/
 		GPIO_pinControlRegisterType pinControlRegisterMux1 = GPIO_MUX1;
 		GPIO_pinControlRegisterType pinControlRegisterInputInterrupt = GPIO_MUX1|GPIO_PE|INTR_RISING_EDGE;
-		GPIO_pinControlRegisterType pinControlRegisterInputInterruptPSFE = GPIO_MUX1|GPIO_PE|GPIO_PS|INTR_FALLING_EDGE;
+		GPIO_pinControlRegisterType pinControlRegisterMux3 = GPIO_MUX3;
 
 		/**Configure the characteristics in the GPIOs*/
-		//LEDs
-		GPIO_pinControlRegister(GPIO_B,BIT21,&pinControlRegisterMux1);
-		GPIO_pinControlRegister(GPIO_B,BIT22,&pinControlRegisterMux1);
-		GPIO_pinControlRegister(GPIO_E,BIT26,&pinControlRegisterMux1);
 		//Buttons
 		GPIO_pinControlRegister(GPIO_C,BIT5,&pinControlRegisterInputInterrupt);
 		GPIO_pinControlRegister(GPIO_C,BIT7,&pinControlRegisterInputInterrupt);
@@ -60,17 +59,11 @@ void initMain(){
 		GPIO_pinControlRegister(GPIO_C,BIT10,&pinControlRegisterMux1);
 		//LM35
 		GPIO_pinControlRegister(GPIO_B,BIT2,&pinControlRegisterMux1);
+		//Inputcap
+		GPIO_pinControlRegister(GPIO_B,BIT18,&pinControlRegisterMux3);
 
-		/**Assigns a safe value to the output pin21 of the GPIOB*/
-		GPIOB->PDOR |= 0x00200000;/**Blue led off*/
-		GPIOB->PDOR |= 0x00400000;/**Red led off*/
-		GPIOE->PDOR |= 0x04000000;/**Green led off*/
 
 		/**Configure Port Pins as input/output*/
-		//LEDs
-		GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT21);
-		GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT22);
-		GPIO_dataDirectionPIN(GPIO_E,GPIO_OUTPUT,BIT26);
 		//Buttons
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT5);
 		GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT7);
@@ -95,10 +88,10 @@ void initMain(){
 		/*! Configuration function for the LCD */
 		LCDNokia_init();
 		/*ADC initialize*/
-		ADC_init(LOW_POWER, CLOCK1, S_LONG, ADC_16Bits, BUS_CLOCK);
+		ADC_init();
 
-		EnableInterrupts;
-
+		PIT_clear(PIT_0);
+		PIT_delay(PIT_0, SYSTEM_CLOCK, 0.2);// delay until next function value
 }
 
 void initDAC(){

@@ -15,6 +15,7 @@
 
 static uint8 conversion_f[6];  // string value we're gonna inyect into the screen when transforming from float to string
 static uint8 conversion[2];  // string value we're gonna inyect into the screen when transforming from float to string
+static uint8 conversionFrequency[5];
 
 void float_String(ufloat32 fl)
 {
@@ -37,6 +38,7 @@ void float_String(ufloat32 fl)
 	conversion[0] = decenas;
 	conversion[1] = unidades;
 }
+
 
 void float_String_F(ufloat32 fl)
 {
@@ -76,7 +78,21 @@ void float_String_F(ufloat32 fl)
 	conversion_f[5] = centesimas;
 }
 
+void frequencyToSreen(uint16 frequency){
 
+	//decode value to integer, decimals...
+	uint16 five = (uint16) frequency/10000;
+	uint16 four= (uint16) frequency/1000 -five*10;
+	uint16 three = (uint16) frequency/100 -five*100 -four*10;
+	uint16 two = (uint16) frequency/10 -five*1000 -four*100 -three*10;
+	uint16 one = (uint16) frequency -five*10000 -four*1000 -three*100 -two*10;
+
+	conversionFrequency[0] = five + 48;
+	conversionFrequency[1] = four + 48;
+	conversionFrequency[2] = three + 48;
+	conversionFrequency[3] = two + 48;
+	conversionFrequency[4] = one + 48;
+}
 
 void Screen_Config(ProgrmaState state)
 {
@@ -85,6 +101,7 @@ void Screen_Config(ProgrmaState state)
 	uint8 multi_perc[] = "%";
 	uint8 multi_Cel[] = "'C";
 	uint8 multi_Change[] = "(-)B1 (+)B2   (ok)B3";
+	uint8 multi_cien[] = "100";
 
 	uint8 main_Vel[] = "Velocidad";
 	uint8 main_Temp[] = "Temperatura";
@@ -110,27 +127,50 @@ void Screen_Config(ProgrmaState state)
 	switch(state)
 	{
 	case MAIN_STATE:
-		float_String(getSystemStatus()->motor.velocityValue); //converts current motor value into a string
-        LCDNokia_clear(); //clears the screen
-		LCDNokia_gotoXY(10,0); //goes to a specific position where we're gonna put the string
-		LCDNokia_sendString(main_Vel); // introduces the string
-		delay(65000);
-		LCDNokia_gotoXY(25,1);
-		LCDNokia_sendString(conversion);
-		delay(65000);
-		LCDNokia_gotoXY(38,1);
-		LCDNokia_sendString(multi_perc);
-		delay(65000);
-		LCDNokia_gotoXY(7,2);
-		LCDNokia_sendString(main_Temp);
-		delay(65000);
-		float_String(getSystemStatus()->temperature.celsiusValue);// converts current celsius value into a string
-		LCDNokia_gotoXY(25,3);
-		LCDNokia_sendString(conversion);
-		delay(65000);
-		LCDNokia_gotoXY(40,3);
-		LCDNokia_sendString(multi_Cel);
-		delay(65000);
+		if(100 == getSystemStatus()->motor.velocityMonitor){
+				LCDNokia_clear(); //clears the screen
+				LCDNokia_gotoXY(10,0); //goes to a specific position where we're gonna put the string
+				LCDNokia_sendString(main_Vel); // introduces the string
+				delay(65000);
+				LCDNokia_gotoXY(24,1);
+				LCDNokia_sendString(multi_cien);
+				delay(65000);
+				LCDNokia_gotoXY(46,1);
+				LCDNokia_sendString(multi_perc);
+				delay(65000);
+				LCDNokia_gotoXY(7,2);
+				LCDNokia_sendString(main_Temp);
+				delay(65000);
+				float_String(getSystemStatus()->temperature.celsiusValue);// converts current celsius value into a string
+				LCDNokia_gotoXY(25,3);
+				LCDNokia_sendString(conversion);
+				delay(65000);
+				LCDNokia_gotoXY(40,3);
+				LCDNokia_sendString(multi_Cel);
+				delay(65000);
+			}else{
+				float_String(getSystemStatus()->motor.velocityValue); //converts current motor value into a string
+				LCDNokia_clear(); //clears the screen
+				LCDNokia_gotoXY(10,0); //goes to a specific position where we're gonna put the string
+				LCDNokia_sendString(main_Vel); // introduces the string
+				delay(65000);
+				LCDNokia_gotoXY(25,1);
+				LCDNokia_sendString(conversion);
+				delay(65000);
+				LCDNokia_gotoXY(38,1);
+				LCDNokia_sendString(multi_perc);
+				delay(65000);
+				LCDNokia_gotoXY(7,2);
+				LCDNokia_sendString(main_Temp);
+				delay(65000);
+				float_String(getSystemStatus()->temperature.celsiusValue);// converts current celsius value into a string
+				LCDNokia_gotoXY(25,3);
+				LCDNokia_sendString(conversion);
+				delay(65000);
+				LCDNokia_gotoXY(40,3);
+				LCDNokia_sendString(multi_Cel);
+				delay(65000);
+			}
 	break;
 	case MAIN_MENU_STATE:
 		LCDNokia_clear();
@@ -230,20 +270,20 @@ void Screen_Config(ProgrmaState state)
 	case CHANGE_STATE:
 		if(B1 == getSystemStatus()->pressedButton) // checks if we're decreasing to show we're decreasing the treshold and shows the value it's gonna be switched to
 		{
-			float_String(getSystemStatus()->alarm.decrementMonitor); // converts the value its gonna be switched to into a string
-			LCDNokia_clear();
-			LCDNokia_gotoXY(10,1);
-			LCDNokia_sendString(sub3_Decre);
-			delay(65000);
-			LCDNokia_gotoXY(25,2);
-			LCDNokia_sendString(conversion);
-			delay(65000);
-			LCDNokia_gotoXY(45,2);
-			LCDNokia_sendString(multi_perc);
-			delay(65000);
-			LCDNokia_gotoXY(0,3);
-			LCDNokia_sendString(multi_Change);
-			delay(65000);
+				float_String(getSystemStatus()->alarm.decrementMonitor); // converts the value its gonna be switched to into a string
+				LCDNokia_clear();
+				LCDNokia_gotoXY(10,1);
+				LCDNokia_sendString(sub3_Decre);
+				delay(65000);
+				LCDNokia_gotoXY(25,2);
+				LCDNokia_sendString(conversion);
+				delay(65000);
+				LCDNokia_gotoXY(45,2);
+				LCDNokia_sendString(multi_perc);
+				delay(65000);
+				LCDNokia_gotoXY(0,3);
+				LCDNokia_sendString(multi_Change);
+				delay(65000);
 		}else if(B2 == getSystemStatus()->pressedButton){ //checks if we're increasing to show we're increasing the treshold and shows the value it's gonna be switched to
 			float_String(getSystemStatus()->alarm.decrementMonitor); // converts the value its gonna be switched to into a string
 			LCDNokia_clear();
@@ -279,46 +319,86 @@ void Screen_Config(ProgrmaState state)
 	case MANUAL_STATE:
 			if((B4 == getSystemStatus()->pressedButton) || (B5 == getSystemStatus()->pressedButton)) // if either B4 or B5 we're pressed shows the value the motor is gonna be switched to
 			{
-				LCDNokia_clear();
-				LCDNokia_gotoXY(5,0);
-				LCDNokia_sendString(sub4_Ctrl);
-				delay(65000);
-				float_String(getSystemStatus()->motor.velocityMonitor); // converts value the motor is gonna be switched to into a string
-				LCDNokia_gotoXY(30,1);
-				LCDNokia_sendString(conversion);
-				delay(65000);
-				LCDNokia_gotoXY(50,1);
-				LCDNokia_sendString(multi_perc);
-				delay(65000);
-				LCDNokia_gotoXY(0,2);
-				LCDNokia_sendString(sub4_Change);
-				delay(65000);
-				LCDNokia_gotoXY(5,5);
-				LCDNokia_sendString(sub4_Change2);
-				delay(65000);
+				if(100 == getSystemStatus()->motor.velocityMonitor){
+					LCDNokia_clear();
+					LCDNokia_gotoXY(5,0);
+					LCDNokia_sendString(sub4_Ctrl);
+					delay(65000);
+					float_String(getSystemStatus()->motor.velocityMonitor); // converts value the motor is gonna be switched to into a string
+					LCDNokia_gotoXY(30,1);
+					LCDNokia_sendString(multi_cien);
+					delay(65000);
+					LCDNokia_gotoXY(50,1);
+					LCDNokia_sendString(multi_perc);
+					delay(65000);
+					LCDNokia_gotoXY(0,2);
+					LCDNokia_sendString(sub4_Change);
+					delay(65000);
+					LCDNokia_gotoXY(5,5);
+					LCDNokia_sendString(sub4_Change2);
+					delay(65000);
+				}else{
+					LCDNokia_clear();
+					LCDNokia_gotoXY(5,0);
+					LCDNokia_sendString(sub4_Ctrl);
+					delay(65000);
+					float_String(getSystemStatus()->motor.velocityMonitor); // converts value the motor is gonna be switched to into a string
+					LCDNokia_gotoXY(30,1);
+					LCDNokia_sendString(conversion);
+					delay(65000);
+					LCDNokia_gotoXY(50,1);
+					LCDNokia_sendString(multi_perc);
+					delay(65000);
+					LCDNokia_gotoXY(0,2);
+					LCDNokia_sendString(sub4_Change);
+					delay(65000);
+					LCDNokia_gotoXY(5,5);
+					LCDNokia_sendString(sub4_Change2);
+					delay(65000);
+				}
 			}else{	// if we havent pressed anything shows the current motor value
-				LCDNokia_clear();
-				LCDNokia_gotoXY(5,0);
-				LCDNokia_sendString(sub4_Ctrl);
-				delay(65000);
-				float_String(getSystemStatus()->motor.velocityValue);  // converts current motor value into string
-				LCDNokia_gotoXY(30,1);
-				LCDNokia_sendString(conversion);
-				delay(65000);
-				LCDNokia_gotoXY(50,1);
-				LCDNokia_sendString(multi_perc);
-				delay(65000);
-				LCDNokia_gotoXY(0,2);
-				LCDNokia_sendString(sub4_Change);
-				delay(65000);
-				LCDNokia_gotoXY(5,5);
-				LCDNokia_sendString(sub4_Change2);
-				delay(65000);
+				if(100 == getSystemStatus()->motor.velocityMonitor){
+					LCDNokia_clear();
+					LCDNokia_gotoXY(5,0);
+					LCDNokia_sendString(sub4_Ctrl);
+					delay(65000);
+					float_String(getSystemStatus()->motor.velocityMonitor); // converts value the motor is gonna be switched to into a string
+					LCDNokia_gotoXY(30,1);
+					LCDNokia_sendString(multi_cien);
+					delay(65000);
+					LCDNokia_gotoXY(50,1);
+					LCDNokia_sendString(multi_perc);
+					delay(65000);
+					LCDNokia_gotoXY(0,2);
+					LCDNokia_sendString(sub4_Change);
+					delay(65000);
+					LCDNokia_gotoXY(5,5);
+					LCDNokia_sendString(sub4_Change2);
+					delay(65000);
+				}else{
+					LCDNokia_clear();
+					LCDNokia_gotoXY(5,0);
+					LCDNokia_sendString(sub4_Ctrl);
+					delay(65000);
+					float_String(getSystemStatus()->motor.velocityValue);  // converts current motor value into string
+					LCDNokia_gotoXY(25,1);
+					LCDNokia_sendString(conversion);
+					delay(65000);
+					LCDNokia_gotoXY(54,1);
+					LCDNokia_sendString(multi_perc);
+					delay(65000);
+					LCDNokia_gotoXY(0,2);
+					LCDNokia_sendString(sub4_Change);
+					delay(65000);
+					LCDNokia_gotoXY(5,5);
+					LCDNokia_sendString(sub4_Change2);
+					delay(65000);
+				}
 			}
 	break;
 	case FRECUENCY_STATE:
-		float_String(getSystemStatus()->frecuency); // converts the frequency value into a string
 		LCDNokia_clear();
+		float_String(getSystemStatus()->frecuency); // converts the frequency value into a string
 		LCDNokia_gotoXY(10,1);
 		LCDNokia_sendString(sub5_Freq);
 		delay(65000);
@@ -326,7 +406,12 @@ void Screen_Config(ProgrmaState state)
 		LCDNokia_sendString(sub5_Hz);
 		delay(65000);
 		LCDNokia_gotoXY(20,3);
-		LCDNokia_sendString(conversion);
+		frequencyToSreen((uint16) getSystemStatus()->frecuency);
+		LCDNokia_sendChar(conversionFrequency[0]);
+		LCDNokia_sendChar(conversionFrequency[1]);
+		LCDNokia_sendChar(conversionFrequency[2]);
+		LCDNokia_sendChar(conversionFrequency[3]);
+		LCDNokia_sendChar(conversionFrequency[4]);
 		delay(65000);
 	break;
 	case ERROR_STATE:
