@@ -192,7 +192,7 @@ void LCD_delay(void)
 	
 	for(counter=0; counter<1500; counter++) 
 	{	   
-		
+		//wait for the delay to finish
 	}
 }
 

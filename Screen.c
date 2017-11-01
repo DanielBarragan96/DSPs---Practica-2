@@ -87,6 +87,7 @@ void frequencyToSreen(uint16 frequency){
 	uint16 two = (uint16) frequency/10 -five*1000 -four*100 -three*10;
 	uint16 one = (uint16) frequency -five*10000 -four*1000 -three*100 -two*10;
 
+	//Store each number in a string of 5 digits, each in their ASCII value
 	conversionFrequency[0] = five + 48;
 	conversionFrequency[1] = four + 48;
 	conversionFrequency[2] = three + 48;
@@ -122,6 +123,8 @@ void Screen_Config(ProgrmaState state)
 	uint8 sub4_Change2[] = "(-)B4 (+)B5";
 	uint8 sub5_Freq[] = "Frecuencia";
 	uint8 sub5_Hz[] = "(Hz)";
+
+	uint8 error_string[] = "ERROR!";
 
 	/*switch with the current state of our systemstatus*/
 	switch(state)
@@ -396,9 +399,8 @@ void Screen_Config(ProgrmaState state)
 				}
 			}
 	break;
-	case FRECUENCY_STATE:
+	case FRECUENCY_STATE://for this case we need to show the frequency value, which can be a number up to a ten thousand values order
 		LCDNokia_clear();
-		float_String(getSystemStatus()->frecuency); // converts the frequency value into a string
 		LCDNokia_gotoXY(10,1);
 		LCDNokia_sendString(sub5_Freq);
 		delay(65000);
@@ -406,16 +408,20 @@ void Screen_Config(ProgrmaState state)
 		LCDNokia_sendString(sub5_Hz);
 		delay(65000);
 		LCDNokia_gotoXY(20,3);
+		//convert the frequency value to a string, we need only the integer part, so we cast it
 		frequencyToSreen((uint16) getSystemStatus()->frecuency);
-		LCDNokia_sendChar(conversionFrequency[0]);
+		LCDNokia_sendChar(conversionFrequency[0]);//Print in the screen each char
 		LCDNokia_sendChar(conversionFrequency[1]);
 		LCDNokia_sendChar(conversionFrequency[2]);
 		LCDNokia_sendChar(conversionFrequency[3]);
 		LCDNokia_sendChar(conversionFrequency[4]);
 		delay(65000);
 	break;
-	case ERROR_STATE:
-		LCDNokia_clear();
-	break;
+	case ERROR_STATE:{
+		LCDNokia_clear();//If there was an error show error message
+		LCDNokia_gotoXY(7,2);
+		LCDNokia_sendString(error_string);
+		break;
+		}
 	}
 }

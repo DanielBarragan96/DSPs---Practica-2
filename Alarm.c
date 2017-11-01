@@ -21,18 +21,18 @@ void checkAlarm(){
 	if(alarmLimit > measuredAlarm){//actualStatus.alarm.alarmaValue >= (actualStatus.alarm.alarmaValue -1)
 		if(ON == actualAlarm.alarmStatus){
 			GPIO_clearPIN(GPIO_C, BIT10);//Turn off the alarm
-			changeAlarm(OFF);
+			changeAlarm(OFF);//change alarm status
 		}
 	}
 	else if(alarmLimit <= measuredAlarm){
 		if(OFF == actualAlarm.alarmStatus){
 			GPIO_setPIN(GPIO_C, BIT10);//Turn on the alarm
-			changeAlarm(ON);
+			changeAlarm(ON);//change alarm status
 		}
-		ufloat32 decreaseQuantitie2 = (uint32) (measuredAlarm-alarmLimit)/2;
+		ufloat32 decreaseQuantitie2 = (uint32) (measuredAlarm-alarmLimit)/2;//for each 2 degrees down the limit we have to reduce the motor speed
 		if(decreaseQuantitie2 > decreaseQuantitie){
 			ufloat32 deltaQuantitie = decreaseQuantitie2 - decreaseQuantitie;//Difference with the current times that we decreased the motor speed
-			decreaseQuantitie += deltaQuantitie;
+			decreaseQuantitie += deltaQuantitie;//update the decreased value
 			for(ufloat32 i = deltaQuantitie; i >= 1 ; i--){
 				decreaseSpeed();//decrease the speed according to the motor
 			}
@@ -41,4 +41,4 @@ void checkAlarm(){
 	getSystemStatus()->temperature.celsiusValue = measuredAlarm;//update the measured value in the systemState
 }
 
-void resetDecreaseQuantitie(){	decreaseQuantitie = 0;	}//reset the decreased motor speed from the measured tempreature
+void resetDecreaseQuantitie(){	decreaseQuantitie = 0;	}//reset the decreased motor speed from the measured temperature

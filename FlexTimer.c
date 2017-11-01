@@ -28,14 +28,6 @@ static uint16 MOD_old = 0;
 //static ufloat32 periodo = 0;
 static ufloat32 frecuencia = 0;
 
-static BooleanType frequencyReady = FALSE;
-
-ufloat32 GetFreq()
-{
-	if(TRUE == frequencyReady)
-		return frecuencia;
-}
-
 void FTM0_ISR()
 {
 	FTM0->SC &= ~FLEX_TIMER_TOF;
@@ -70,13 +62,11 @@ void FTM2_IRQHandler()
 			MOD_old = MOD_count;
 			CNV_old = FTM2->CONTROLS[0].CnV;
 			Rise_flag = TRUE;
-			frequencyReady = TRUE;
 		}else if(TRUE == Rise_flag){
 			MOD_new = MOD_count;
 			CNV_new = FTM2->CONTROLS[0].CnV;
 			Rise_flag = FALSE;
 			Frequency_Calc();
-			frequencyReady = FALSE;
 		}
 		FTM2->CONTROLS[0].CnSC &= ~(FTM_CnSC_CHF_MASK);
 	}
@@ -87,7 +77,7 @@ void Frequency_Calc()
 	ufloat32 Ts_difference = 0;
 	Ts_difference = ((MOD_new)*(FTM2->MOD)+CNV_new)-((MOD_old)*(FTM2->MOD)+CNV_old);
 	frecuencia = (SYSTEM_CLOCK/2)/(Ts_difference*22.5);
-	setFrequency(frecuencia);
+	setFrequency(frecuencia);//set the new frequency value
 }
 
 void FlexTimer2_updateCHValue(sint16 channelValue)

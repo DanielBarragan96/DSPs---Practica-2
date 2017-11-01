@@ -31,7 +31,7 @@ const SPI_ConfigType SPI_Config = {
 
 void initMain(){
 
-	/**Activating the clock gating of the GPIOs and the PIT*/
+		/**Activating the clock gating of the GPIOs and the PIT*/
 		GPIO_clockGating(GPIO_A);
 		GPIO_clockGating(GPIO_B);
 		GPIO_clockGating(GPIO_C);
@@ -90,13 +90,7 @@ void initMain(){
 		/*ADC initialize*/
 		ADC_init();
 
+		//initialize the used PIT for controlling the motor PWM
 		PIT_clear(PIT_0);
 		PIT_delay(PIT_0, SYSTEM_CLOCK, 0.2);// delay until next function value
 }
-
-void initDAC(){
-	PIT_clockGating();//enable usage of the PIT
-	SIM->SCGC2 = DAC_SIM;//activates clock for use of PIT
-	DAC0->C0 = 0xC0;//Resets DAC output value
-}
-
