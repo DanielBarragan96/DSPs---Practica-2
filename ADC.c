@@ -29,5 +29,5 @@ uint16 ADC_Values()
 
 uint16 convertRead()
 {
-	return ((ADC_Values()*0.00060566)/(.010));//Convert the read value to the Degrees Scale
+	return ((ADC_Values()*0.00060566)/(.010));//Convert the read value to the Degrees Scale (3.3V/2^12)/.010
 }

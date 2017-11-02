@@ -16,24 +16,22 @@
 #include "PIT.h"
 #include "States.h"
 
-//  mod = #grande; chie
 
-//static BooleanType CNSC_FLAG = FALSE;
-static uint16 CNV_old = 0;
+/**the old values are the values for the first edge and new ones are for the second edge*/
+static uint16 CNV_old = 0;//value between 0 and mod where the edge rises
 static uint16 CNV_new = 0;
-static BooleanType Rise_flag = FALSE;
-static uint16 MOD_count = 0;
+static BooleanType Rise_flag = FALSE;//flag, turns to true after the first edge
+static uint16 MOD_count = 0;//value of how many times we've been through the mod count
 static uint16 MOD_new = 0;
 static uint16 MOD_old = 0;
-//static ufloat32 periodo = 0;
-static ufloat32 frecuencia = 0;
+static ufloat32 frecuencia = 0;//value that holds freq value
 
 void FTM0_ISR()
 {
 	FTM0->SC &= ~FLEX_TIMER_TOF;
 	GPIOD->PDOR ^= 0xFF;
 }
-
+//give a new value to cnv
 void FlexTimer_updateCHValue(sint16 channelValue)
 {
 	/**Assigns a new value for the duty cycle*/
@@ -51,27 +49,30 @@ void FTM2_IRQHandler()
 	//if we overflow with mod
 	if(FTM2->SC & FTM_SC_TOF_MASK)
 	{
-		MOD_count++;
-		FTM2->SC &= ~(FTM_SC_TOF_MASK);
+		MOD_count++;	//augment the mod counter
+		FTM2->SC &= ~(FTM_SC_TOF_MASK);	//clear flag
 	}
 	//if we have an edge on the signal
 	if(FTM2->CONTROLS[0].CnSC & FTM_CnSC_CHF_MASK)
     {
+		/**asigns the values of the first edge*/
 		if(FALSE == Rise_flag)
 		{
 			MOD_old = MOD_count;
 			CNV_old = FTM2->CONTROLS[0].CnV;
 			Rise_flag = TRUE;
+			/**the second time there's an edge assigns the new values and makes the flag 0 and calls the function to calculate the frequency*/
 		}else if(TRUE == Rise_flag){
 			MOD_new = MOD_count;
 			CNV_new = FTM2->CONTROLS[0].CnV;
 			Rise_flag = FALSE;
 			Frequency_Calc();
 		}
-		FTM2->CONTROLS[0].CnSC &= ~(FTM_CnSC_CHF_MASK);
+		FTM2->CONTROLS[0].CnSC &= ~(FTM_CnSC_CHF_MASK);//turns off the ch interrupt flag
 	}
 }
 
+/**calculates the difference between the edges to get the period and then using the system clock calculates the frequency value*/
 void Frequency_Calc()
 {
 	ufloat32 Ts_difference = 0;

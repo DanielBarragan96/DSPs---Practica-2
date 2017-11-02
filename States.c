@@ -215,7 +215,7 @@ void updateSystemState(){
 			return;
 		}
 		case ERROR_STATE:
-		default: {//this cases meant there was a problem with the system, with this we can reset the screen
+		default: {//enters this state when there was a problem with the system, with this we can reset the screen
 			systemState.currentState = MAIN_STATE;
 			return;
 		}
@@ -241,7 +241,7 @@ void changeAlarm(StatusTurn status){
 }
 void decreaseSpeed(){
 	systemState.motor.velocityValue -= systemState.alarm.decrementValue;//decreases motor speed
-	if(VEL_LOW > systemState.motor.velocityValue) systemState.motor.velocityValue = 5;//if the velocity is minor than the limit reset
+	if(VEL_LOW > systemState.motor.velocityValue) systemState.motor.velocityValue = 5;//if the velocity is less than the limit reset
 }
 void setFrequency(ufloat32 newFrequency){
 	systemState.frecuency = newFrequency;//new frequency value
