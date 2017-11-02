@@ -50,8 +50,8 @@ int main(void) {
 
 	initMain();//configure the Kinetis
 	/**the first init is for the pwm and the second one is for the input capture*/
-	FlexTimer_Init();
-	FlexTimer2_Init();
+	FlexTimer_Init();//init for ftm0
+	FlexTimer2_Init();//init for ftm2
 	initStates();//initialize the temperature dependencies (velocity & current temperature)
 
 	Screen_Config(MAIN_STATE);//set initial image of the screen

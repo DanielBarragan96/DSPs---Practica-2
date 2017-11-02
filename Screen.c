@@ -13,9 +13,9 @@
 #include "Screen.h"
 #include "GlobalFunctions.h"
 
-static uint8 conversion_f[6];  // string value we're gonna inyect into the screen when transforming from float to string
-static uint8 conversion[2];  // string value we're gonna inyect into the screen when transforming from float to string
-static uint8 conversionFrequency[5];
+static uint8 conversion_f[6];  // string value we're gonna inject into the screen when transforming from float to string when its for fahrenheit
+static uint8 conversion[2];  // string value we're gonna inject into the screen when transforming from float to string when it has no decimals
+static uint8 conversionFrequency[5]; // string value we're gonna inject into the screen when transforming from float to string for freq
 
 void float_String(ufloat32 fl)
 {
@@ -279,7 +279,12 @@ void Screen_Config(ProgrmaState state)
 				LCDNokia_sendString(sub3_Decre);
 				delay(65000);
 				LCDNokia_gotoXY(25,2);
-				LCDNokia_sendString(conversion);
+				if(VEL_MAX == getSystemStatus()->alarm.decrementMonitor){
+					LCDNokia_sendString(multi_cien);
+				}
+				else{
+					LCDNokia_sendString(conversion);
+				}
 				delay(65000);
 				LCDNokia_gotoXY(45,2);
 				LCDNokia_sendString(multi_perc);
@@ -294,7 +299,12 @@ void Screen_Config(ProgrmaState state)
 			LCDNokia_sendString(sub3_Inc);
 			delay(65000);
 			LCDNokia_gotoXY(25,2);
-			LCDNokia_sendString(conversion);
+			if(VEL_MAX == getSystemStatus()->alarm.decrementMonitor){
+				LCDNokia_sendString(multi_cien);
+			}
+			else{
+				LCDNokia_sendString(conversion);
+			}
 			delay(65000);
 			LCDNokia_gotoXY(45,2);
 			LCDNokia_sendString(multi_perc);
@@ -309,7 +319,12 @@ void Screen_Config(ProgrmaState state)
 			LCDNokia_sendString(sub3_Decre);
 			delay(65000);
 			LCDNokia_gotoXY(25,2);
-			LCDNokia_sendString(conversion);
+			if(VEL_MAX == getSystemStatus()->alarm.decrementMonitor){
+				LCDNokia_sendString(multi_cien);
+			}
+			else{
+				LCDNokia_sendString(conversion);
+			}
 			delay(65000);
 			LCDNokia_gotoXY(45,2);
 			LCDNokia_sendString(multi_perc);
