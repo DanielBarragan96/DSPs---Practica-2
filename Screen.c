@@ -279,7 +279,12 @@ void Screen_Config(ProgrmaState state)
 				LCDNokia_sendString(sub3_Decre);
 				delay(65000);
 				LCDNokia_gotoXY(25,2);
-				LCDNokia_sendString(conversion);
+				if(VEL_MAX == getSystemStatus()->alarm.decrementMonitor){
+					LCDNokia_sendString(multi_cien);
+				}
+				else{
+					LCDNokia_sendString(conversion);
+				}
 				delay(65000);
 				LCDNokia_gotoXY(45,2);
 				LCDNokia_sendString(multi_perc);
@@ -294,7 +299,12 @@ void Screen_Config(ProgrmaState state)
 			LCDNokia_sendString(sub3_Inc);
 			delay(65000);
 			LCDNokia_gotoXY(25,2);
-			LCDNokia_sendString(conversion);
+			if(VEL_MAX == getSystemStatus()->alarm.decrementMonitor){
+				LCDNokia_sendString(multi_cien);
+			}
+			else{
+				LCDNokia_sendString(conversion);
+			}
 			delay(65000);
 			LCDNokia_gotoXY(45,2);
 			LCDNokia_sendString(multi_perc);
@@ -309,7 +319,12 @@ void Screen_Config(ProgrmaState state)
 			LCDNokia_sendString(sub3_Decre);
 			delay(65000);
 			LCDNokia_gotoXY(25,2);
-			LCDNokia_sendString(conversion);
+			if(VEL_MAX == getSystemStatus()->alarm.decrementMonitor){
+				LCDNokia_sendString(multi_cien);
+			}
+			else{
+				LCDNokia_sendString(conversion);
+			}
 			delay(65000);
 			LCDNokia_gotoXY(45,2);
 			LCDNokia_sendString(multi_perc);

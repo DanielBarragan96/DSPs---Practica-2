@@ -193,14 +193,14 @@ void updateSystemState(){
 							case B4:{//this decreases the motor velocity motor by 5%
 								if(!systemState.motor.motorStatusMonitor)
 									return;
-								systemState.motor.velocityMonitor -= 5;
+								systemState.motor.velocityMonitor -= systemState.alarm.decrementValue;
 								if(VEL_LOW > systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 5;
 								return;
 							}
 							case B5:{//this increases the motor velocity motor by 5%
 								if(!systemState.motor.motorStatusMonitor)
 									return;
-								systemState.motor.velocityMonitor += 5;
+								systemState.motor.velocityMonitor += systemState.alarm.decrementValue;
 								if(VEL_MAX < systemState.motor.velocityMonitor) systemState.motor.velocityMonitor = 100;
 								return;
 							}
